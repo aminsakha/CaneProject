@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">CaneProject</string>
+    <string name="AsaProject">CaneProject</string>
+    <string name="Bluetooth_Address">98:D3:31:F9:96:D2</string>
+    <string name="Bluetooth_AddressGuitar">98:D3:61:F6:05:D0</string>
+    <string name="Bluetooth_AddressNew">98:D3:21:F7:74:AB</string>
+    <string name="connect_to_module">در حال اتصال به ماژول . . .</string>
+    <string name="wait_message">لطفا صبر کنید . . .</string>
 </resources>
