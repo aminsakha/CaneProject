@@ -26,10 +26,10 @@ class HardWareConnection : AppCompatActivity() {
         val saveFileButton: FloatingActionButton = findViewById(R.id.saveFileButton)
         initRecyclerView()
         if (makeConnection == null) {
-            makeConnection = MakeConnection(Activity(), this)
+            makeConnection = MakeConnection(this, this)
             makeConnection!!.execute()
         } else if (makeConnection?.isBluetoothOn == true) {
-            makeConnection = MakeConnection(Activity(), this)
+            makeConnection = MakeConnection(this, this)
             makeConnection!!.execute()
         }
         saveFileButton.setOnClickListener { v ->

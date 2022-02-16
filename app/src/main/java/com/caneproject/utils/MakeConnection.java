@@ -17,14 +17,11 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.caneproject.HardWareConnection;
-import com.caneproject.HardWareConnectionKt;
 import com.caneproject.R;
 
 import java.io.IOException;
 import java.util.UUID;
 
-//this is a asyncTask class that handle checking connection with module (the dialog that we see in hard mode)
 @SuppressLint("StaticFieldLeak")
 public class MakeConnection extends AsyncTask<Void, Void, Void> {
     private boolean ConnectSuccess = true;
@@ -62,7 +59,7 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
             if (socket == null || !isConnected) {
                 Log.d("passed", "passed background");
                 bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                String address = context.getString(R.string.Bluetooth_AddressNew);
+                String address = context.getString(R.string.Bluetooth_AddressGuitar);
                 BluetoothDevice disposition = bluetoothAdapter.getRemoteDevice(address);
                 socket = disposition.createInsecureRfcommSocketToServiceRecord(myUUID);
                 BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
@@ -80,13 +77,12 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(result);
         if (!ConnectSuccess && bluetoothAdapter.isEnabled()) {
             toastShower(context, "Connection Failed.Try again ");
-            activity.onBackPressed();
-
+            ((Activity) context).onBackPressed();
         } else if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             activity.startActivityForResult(enableBtIntent, 1);
             activity.onBackPressed();
-            isBluetoothOn=true;
+            isBluetoothOn = true;
         } else {
             toastShower(context, "Connected");
             isConnected = true;
