@@ -32,7 +32,7 @@ class HardWareConnection : AppCompatActivity() {
             makeConnection = MakeConnection(this, this)
             makeConnection!!.execute()
         }
-        saveFileButton.setOnClickListener { v ->
+        saveFileButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
             intent.type = "text/plain"
             startActivityForResult(
