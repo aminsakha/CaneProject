@@ -42,7 +42,7 @@ fun saveToFile(
 fun processOnString(string: String): MutableList<String> {
     val validStrings = mutableListOf<String>()
     string.forEach { firstIt ->
-        if (firstIt.toString() != "A")
+        if (firstIt !in 'A'..'Z')
             tmpArr.add(firstIt.toString())
         else {
             var validAttribute = ""
@@ -50,7 +50,7 @@ fun processOnString(string: String): MutableList<String> {
                 validAttribute += it
             }
             tmpArr.clear()
-            validStrings.add(validAttribute)
+            validStrings.add("$validAttribute$firstIt")
         }
     }
     return validStrings

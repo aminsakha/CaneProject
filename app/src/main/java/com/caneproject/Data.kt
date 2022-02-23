@@ -16,6 +16,6 @@ class Data(
     }
 
     override fun toString(): String {
-        return "$string1'W' , $string2'R', $string3'G', $string4'B'"
+        return "$string1 , $string2 , $string3 , $string4 "
     }
 }
