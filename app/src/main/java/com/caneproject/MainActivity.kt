@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.microsoft.appcenter.AppCenter
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             Analytics::class.java,
             Crashes::class.java
         )
-        val button: Button = findViewById(R.id.ConnectionButton)
+        val button: CardView = findViewById(R.id.ConnectionButton)
         val arr = listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
         button.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)

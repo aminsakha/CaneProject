@@ -87,7 +87,7 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
             toastShower(context, "Connected");
             isConnected = true;
             sendSignal("901G");
-            HandleReceivedNotes.beginListenForData(socket, context);
+            HandleReceivedNotes.beginListenForData(socket);
         }
         progress.dismiss();
     }
