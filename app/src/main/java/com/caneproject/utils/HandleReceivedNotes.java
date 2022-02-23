@@ -1,6 +1,7 @@
 package com.caneproject.utils;
 
 import static com.caneproject.HardWareConnectionKt.*;
+import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.util.Log;
 import com.caneproject.Data;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class HandleReceivedNotes {
     static int counter = 1;
@@ -29,10 +31,15 @@ public class HandleReceivedNotes {
                         if (counter > 4) {
                             getReceivedNotes().add(currentData[0]);
                             handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
+                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
                             currentData[0] = new Data("", "", "", "");
+                            counter = 1;
                         }
-                        currentData[0].setDataAttribute(counter, receivedString);
-                        counter++;
+                        List<String> curStatus = processOnString(receivedString);
+                        for (String status : curStatus) {
+                            currentData[0].setDataAttribute(counter, status);
+                            counter++;
+                        }
                     }
                 } catch (Exception ignored) {
                 }

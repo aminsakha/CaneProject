@@ -8,10 +8,12 @@ import android.widget.Toast
 import com.caneproject.Data
 import java.io.FileOutputStream
 
+var tmpArr = mutableListOf<String>()
 fun toastShower(context: Context?, message: String?) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
- fun writeToFile(context: Context?, uri: Uri, content: String) {
+
+fun writeToFile(context: Context?, uri: Uri, content: String) {
     val parcelFileDescriptor =
         context?.contentResolver?.openFileDescriptor(uri, "w")
     val fileOutputStream = FileOutputStream(parcelFileDescriptor?.fileDescriptor)
@@ -19,7 +21,8 @@ fun toastShower(context: Context?, message: String?) {
     fileOutputStream.close()
     parcelFileDescriptor?.close()
 }
- fun saveToFile(
+
+fun saveToFile(
     context: Context?,
     list: MutableList<Data>,
     requestCode: Int,
@@ -34,4 +37,21 @@ fun toastShower(context: Context?, message: String?) {
         writeToFile(context, data.data!!, stringBuilder.toString())
         toastShower(context, "file saved successfully")
     }
+}
+
+fun processOnString(string: String): MutableList<String> {
+    val validStrings = mutableListOf<String>()
+    string.forEach { firstIt ->
+        if (firstIt.toString() != "A")
+            tmpArr.add(firstIt.toString())
+        else {
+            var validAttribute = ""
+            tmpArr.forEach {
+                validAttribute += it
+            }
+            tmpArr.clear()
+            validStrings.add(validAttribute)
+        }
+    }
+    return validStrings
 }

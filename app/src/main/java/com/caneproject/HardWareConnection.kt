@@ -2,6 +2,7 @@ package com.caneproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,23 +15,22 @@ import java.io.IOException
 var receivedNotes: MutableList<Data>? = null
 var adapter: HardWareModeAdaptor? = null
 var makeConnection: MakeConnection? = null
+var recyclerView: RecyclerView? = null
+
 class HardWareConnection : AppCompatActivity() {
 
     private val WRITE_CODE = 40
-    private var recyclerView: RecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hard_ware_connection)
         recyclerView = findViewById(R.id.recView)
         val saveFileButton: FloatingActionButton = findViewById(R.id.saveFileButton)
         initRecyclerView()
-        if (makeConnection == null) {
-            makeConnection = MakeConnection(this, this)
-            makeConnection!!.execute()
-        } else if (makeConnection?.isBluetoothOn == true) {
+        if (makeConnection?.socket == null || (makeConnection?.isBluetoothOn == false)) {
             makeConnection = MakeConnection(this, this)
             makeConnection!!.execute()
         }
+
         saveFileButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
             intent.type = "text/plain"
@@ -56,6 +56,7 @@ class HardWareConnection : AppCompatActivity() {
         adapter?.notifyDataSetChanged()
     }
 }
+
 fun sendSignal(number: String) {
     if (makeConnection?.socket != null) {
         try {
