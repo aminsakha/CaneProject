@@ -10,5 +10,6 @@
     <color name="Blue">#0C8FF3</color>
     <color name="yellow">#BDF00E</color>
     <color name="light_yellow">#FFFFE6</color>
+    <color name="transparent">#80000000</color>
     <color name="light_blue">#E6FFFF</color>
 </resources>

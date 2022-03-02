@@ -19,6 +19,8 @@ public class HandleReceivedNotes {
     public static void beginListenForData(BluetoothSocket socket) {
         final Handler handler = new Handler();
         final Data[] currentData = {new Data("", "", "", "")};
+        getReceivedNotes().add(currentData[0]);
+        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -31,15 +33,18 @@ public class HandleReceivedNotes {
                         if (counter > 4) {
                             getReceivedNotes().add(currentData[0]);
                             handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
-                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
                             currentData[0] = new Data("", "", "", "");
+                            getReceivedNotes().add(currentData[0]);
+                            handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
                             counter = 1;
+                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
                         }
                         List<String> curStatus = processOnString(receivedString);
                         for (String status : curStatus) {
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }
+                        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
                     }
                 } catch (Exception ignored) {
                 }
