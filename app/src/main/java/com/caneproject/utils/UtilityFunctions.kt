@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import com.caneproject.Data
+import com.caneproject.ColorClass
 import java.io.FileOutputStream
 
 var tmpArr = mutableListOf<String>()
@@ -24,7 +24,7 @@ fun writeToFile(context: Context?, uri: Uri, content: String) {
 
 fun saveToFile(
     context: Context?,
-    list: MutableList<Data>,
+    list: MutableList<ColorClass>,
     requestCode: Int,
     resultCode: Int,
     data: Intent?

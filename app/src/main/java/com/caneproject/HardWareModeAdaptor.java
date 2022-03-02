@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
-    static List<Data> noteList;
+    static List<ColorClass> colorList;
 
-    public HardWareModeAdaptor(List<Data> myNoteList) {
-        HardWareModeAdaptor.noteList = myNoteList;
+    public HardWareModeAdaptor(List<ColorClass> myNoteList) {
+        HardWareModeAdaptor.colorList = myNoteList;
         setHasStableIds(true);
     }
 
@@ -40,16 +41,40 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            holder.notes.setText(noteList.get(position).toString());
-
+            holder.notes.setText(colorList.get(position).toString());
+            viewColorController(holder, position);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
 
+    private void viewColorController(@NonNull ViewHolder holder, int position) {
+        switch (colorList.get(position).getResultColor()) {
+            case "R":
+                viewColorChanger("#E91B0C", holder.itemView);
+                break;
+            case "G":
+                viewColorChanger("#10C518", holder.itemView);
+                break;
+            case "B":
+                viewColorChanger("#0C8FF3", holder.itemView);
+                break;
+            default:
+                viewColorChanger("t", holder.itemView);
+                break;
+        }
+    }
+
+    private void viewColorChanger(String color, @NonNull View view) {
+        if (color.equals("t"))
+            view.setBackgroundColor(Color.TRANSPARENT);
+        else
+            view.setBackgroundColor(Color.parseColor(color));
+    }
+
     @Override
     public int getItemCount() {
-        return noteList.size();
+        return colorList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

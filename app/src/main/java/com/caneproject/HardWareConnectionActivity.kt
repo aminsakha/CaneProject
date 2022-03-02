@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.caneproject.utils.MakeConnection
+import com.caneproject.utils.MakeConnectionToModulo
 import com.otaliastudios.cameraview.CameraView
 
 
-var receivedNotes: MutableList<Data>? = null
+var receivedNotes: MutableList<ColorClass>? = null
 var adapter: HardWareModeAdaptor? = null
- var makeConnection: MakeConnection? = null
+ var makeConnectionToModulo: MakeConnectionToModulo? = null
 var recyclerView: RecyclerView? = null
 lateinit var camera: CameraView
 
@@ -23,9 +23,10 @@ class HardWareConnection : AppCompatActivity() {
         camera = findViewById(R.id.camera)
         camera.setLifecycleOwner(this);
         initRecyclerView()
-        if (makeConnection?.socket == null || (makeConnection?.isBluetoothOn == false)) {
-            makeConnection = MakeConnection(this, this)
-            makeConnection!!.execute()
+        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
+            makeConnectionToModulo =
+                MakeConnectionToModulo(this, this)
+            makeConnectionToModulo!!.execute()
         }
     }
 
