@@ -1,6 +1,5 @@
 package com.caneproject.utils;
 
-import static com.caneproject.HardWareConnectionKt.sendSignal;
 import static com.caneproject.utils.UtilityFunctionsKt.toastShower;
 
 import android.annotation.SuppressLint;
@@ -13,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -85,7 +83,6 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
         } else {
             toastShower(context, "Connected");
             isConnected = true;
-            sendSignal("901G");
             HandleReceivedNotes.beginListenForData(socket);
         }
         progress.dismiss();

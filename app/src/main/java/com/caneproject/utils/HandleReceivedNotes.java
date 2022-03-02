@@ -31,11 +31,8 @@ public class HandleReceivedNotes {
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 4) {
-                            getReceivedNotes().add(currentData[0]);
-                            handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
                             currentData[0] = new Data("", "", "", "");
                             getReceivedNotes().add(currentData[0]);
-                            handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
                             counter = 1;
                             handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
                         }
