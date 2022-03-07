@@ -11,7 +11,7 @@ import com.otaliastudios.cameraview.CameraView
 
 var receivedNotes: MutableList<ColorClass>? = null
 var adapter: HardWareModeAdaptor? = null
- var makeConnectionToModulo: MakeConnectionToModulo? = null
+var makeConnectionToModulo: MakeConnectionToModulo? = null
 var recyclerView: RecyclerView? = null
 lateinit var camera: CameraView
 
