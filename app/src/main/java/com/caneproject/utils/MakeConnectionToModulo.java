@@ -1,6 +1,5 @@
 package com.caneproject.utils;
 
-import static com.caneproject.HardWareConnectionKt.sendSignal;
 import static com.caneproject.utils.UtilityFunctionsKt.toastShower;
 
 import android.annotation.SuppressLint;
@@ -13,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -23,7 +21,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @SuppressLint("StaticFieldLeak")
-public class MakeConnection extends AsyncTask<Void, Void, Void> {
+public class MakeConnectionToModulo extends AsyncTask<Void, Void, Void> {
     private boolean ConnectSuccess = true;
     ProgressDialog progress;
     Activity activity;
@@ -43,7 +41,7 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    public MakeConnection(Activity activity, Context context) {
+    public MakeConnectionToModulo(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
     }
@@ -85,7 +83,6 @@ public class MakeConnection extends AsyncTask<Void, Void, Void> {
         } else {
             toastShower(context, "Connected");
             isConnected = true;
-            sendSignal("901G");
             HandleReceivedNotes.beginListenForData(socket);
         }
         progress.dismiss();

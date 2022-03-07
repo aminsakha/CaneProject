@@ -15,7 +15,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -33,6 +35,7 @@ android {
 
 dependencies {
     def appCenterSdkVersion = '4.3.1'
+    api 'com.otaliastudios:cameraview:2.7.2'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
     implementation 'androidx.core:core-ktx:1.7.0'
