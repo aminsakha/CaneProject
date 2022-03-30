@@ -9,7 +9,7 @@ import com.caneproject.utils.MakeConnectionToModulo
 import com.otaliastudios.cameraview.CameraView
 
 
-var receivedNotes: MutableList<ColorClass>? = null
+var receivedNotes: MutableList<Data>? = null
 var adapter: HardWareModeAdaptor? = null
 var makeConnectionToModulo: MakeConnectionToModulo? = null
 var recyclerView: RecyclerView? = null

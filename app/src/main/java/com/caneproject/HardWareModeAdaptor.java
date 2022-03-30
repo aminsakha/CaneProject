@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
-    static List<ColorClass> colorList;
+    static List<Data> dataList;
 
-    public HardWareModeAdaptor(List<ColorClass> myNoteList) {
-        HardWareModeAdaptor.colorList = myNoteList;
+    public HardWareModeAdaptor(List<Data> myNoteList) {
+        HardWareModeAdaptor.dataList = myNoteList;
         setHasStableIds(true);
     }
 
@@ -41,14 +40,15 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            holder.notes.setText(colorList.get(position).toString());
-            viewColorController(holder, position);
+            holder.firstPartTV.setText(dataList.get(position).toString());
+            holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
+            // viewColorController(holder, position);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
 
-    private void viewColorController(@NonNull ViewHolder holder, int position) {
+   /* private void viewColorController(@NonNull ViewHolder holder, int position) {
         switch (colorList.get(position).getResultColor()) {
             case "R":
                 viewColorChanger("#E91B0C", holder.itemView);
@@ -70,21 +70,22 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
             view.setBackgroundColor(Color.TRANSPARENT);
         else
             view.setBackgroundColor(Color.parseColor(color));
-    }
+    }*/
 
     @Override
     public int getItemCount() {
-        return colorList.size();
+        return dataList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView notes;
+        TextView firstPartTV, secondPartTV;
         ConstraintLayout constraintLayout;
 
         @SuppressLint("ClickableViewAccessibility")
         public ViewHolder(View itemView) {
             super(itemView);
-            notes = itemView.findViewById(R.id.notesBoxInHs);
+            firstPartTV = itemView.findViewById(R.id.firstPart);
+            secondPartTV = itemView.findViewById(R.id.secondPart);
             constraintLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
