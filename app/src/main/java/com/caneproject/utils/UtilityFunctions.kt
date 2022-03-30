@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import com.caneproject.Data
+import com.caneproject.classes.Data
 import java.io.FileOutputStream
 
 var tmpArr = mutableListOf<String>()

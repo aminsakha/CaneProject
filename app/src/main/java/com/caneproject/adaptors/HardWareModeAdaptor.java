@@ -1,4 +1,4 @@
-package com.caneproject;
+package com.caneproject.adaptors;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.caneproject.classes.Data;
+import com.caneproject.R;
 
 import java.util.List;
 

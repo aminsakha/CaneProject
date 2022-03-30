@@ -1,10 +1,13 @@
-package com.caneproject
+package com.caneproject.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.caneproject.classes.Data
+import com.caneproject.adaptors.HardWareModeAdaptor
+import com.caneproject.R
 import com.caneproject.utils.MakeConnectionToModulo
 import com.otaliastudios.cameraview.CameraView
 

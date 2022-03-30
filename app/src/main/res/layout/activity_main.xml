@@ -6,7 +6,7 @@
     android:background="@color/light_blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ConnectionButton"

@@ -1,13 +1,12 @@
 package com.caneproject.utils;
 
-import static com.caneproject.HardWareConnectionActivityKt.*;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-import com.caneproject.Data;
+import com.caneproject.classes.Data;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -18,8 +17,8 @@ public class HandleReceivedNotes {
     public static void beginListenForData(BluetoothSocket socket) {
         final Handler handler = new Handler();
         final Data[] currentData = {new Data("", "", "", "", "", "", "", "")};
-        getReceivedNotes().add(currentData[0]);
-        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
+        com.caneproject.activities.HardWareConnectionActivityKt.getReceivedNotes().add(currentData[0]);
+        handler.post(() -> com.caneproject.activities.HardWareConnectionActivityKt.getAdapter().notifyItemChanged(com.caneproject.activities.HardWareConnectionActivityKt.getReceivedNotes().size() - 1));
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -31,9 +30,9 @@ public class HandleReceivedNotes {
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
-                            getReceivedNotes().add(currentData[0]);
+                            com.caneproject.activities.HardWareConnectionActivityKt.getReceivedNotes().add(currentData[0]);
                             counter = 1;
-                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
+                            handler.post(() -> com.caneproject.activities.HardWareConnectionActivityKt.getRecyclerView().smoothScrollToPosition(com.caneproject.activities.HardWareConnectionActivityKt.getAdapter().getItemCount()));
                         }
                         List<String> curStatus = processOnString(receivedString);
                         for (String status : curStatus) {
@@ -42,7 +41,7 @@ public class HandleReceivedNotes {
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }
-                        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
+                        handler.post(() -> com.caneproject.activities.HardWareConnectionActivityKt.getAdapter().notifyItemChanged(com.caneproject.activities.HardWareConnectionActivityKt.getReceivedNotes().size() - 1));
                     }
                 } catch (Exception ignored) {
                 }

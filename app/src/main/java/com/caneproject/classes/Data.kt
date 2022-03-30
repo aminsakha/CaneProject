@@ -1,4 +1,4 @@
-package com.caneproject
+package com.caneproject.classes
 
 class Data(
     var White: String,
