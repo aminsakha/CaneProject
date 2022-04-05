@@ -2,7 +2,6 @@ package com.caneproject.utils;
 
 import static com.caneproject.fragment.GettingDataPageKt.getAdapter;
 import static com.caneproject.fragment.GettingDataPageKt.getReceivedNotes;
-import static com.caneproject.fragment.GettingDataPageKt.getRecyclerView;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
 import android.bluetooth.BluetoothSocket;
@@ -35,7 +34,6 @@ public class HandleReceivedNotes {
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
                             getReceivedNotes().add(currentData[0]);
                             counter = 1;
-                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
                         }
                         List<String> curStatus = processOnString(receivedString);
                         for (String status : curStatus) {
