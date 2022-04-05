@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import android.widget.Toast
-import com.caneproject.Data
+import androidx.navigation.Navigation
+import com.caneproject.classes.Data
 import java.io.FileOutputStream
 
 var tmpArr = mutableListOf<String>()
@@ -55,3 +57,4 @@ fun processOnString(string: String): MutableList<String> {
     }
     return validStrings
 }
+fun changeFragment(view: View, action: Int) = Navigation.findNavController(view).navigate(action)

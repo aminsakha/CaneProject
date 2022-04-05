@@ -5,14 +5,16 @@ plugins {
 
 android {
     compileSdk 31
-
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId "com.caneproject"
         minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -20,7 +22,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,6 +37,9 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def appCenterSdkVersion = '4.3.1'
     api 'com.otaliastudios:cameraview:2.7.2'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"

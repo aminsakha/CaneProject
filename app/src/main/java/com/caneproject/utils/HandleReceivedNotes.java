@@ -1,13 +1,15 @@
 package com.caneproject.utils;
 
-import static com.caneproject.HardWareConnectionActivityKt.*;
+import static com.caneproject.fragment.GettingDataPageKt.getAdapter;
+import static com.caneproject.fragment.GettingDataPageKt.getReceivedNotes;
+import static com.caneproject.fragment.GettingDataPageKt.getRecyclerView;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
 
-import com.caneproject.Data;
+import com.caneproject.classes.Data;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
