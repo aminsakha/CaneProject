@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/initPage">
+
+    <fragment
+        android:id="@+id/gettingDataPage"
+        android:name="com.caneproject.fragment.GettingDataPage"
+        android:label="fragment_getting_data_page"
+        tools:layout="@layout/fragment_getting_data_page" >
+        <action
+            android:id="@+id/action_gettingDataPage_to_dataAnaliticsPage"
+            app:destination="@id/dataAnaliticsPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/initPage"
+        android:name="com.caneproject.fragment.InitPage"
+        android:label="fragment_init_page"
+        tools:layout="@layout/fragment_init_page" >
+        <action
+            android:id="@+id/action_initPage_to_gettingDataPage"
+            app:destination="@id/gettingDataPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataAnaliticsPage"
+        android:name="com.caneproject.fragment.dataAnaliticsPage"
+        android:label="fragment_data_analitics_page"
+        tools:layout="@layout/fragment_data_analitics_page" />
+</navigation>

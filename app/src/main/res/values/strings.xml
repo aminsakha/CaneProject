@@ -1,5 +1,5 @@
 <resources>
-    <string name="AsaProject">Asa010110</string>
+    <string name="AsaProject">Asa010116</string>
     <string name="Bluetooth_Address">98:D3:31:F9:96:D2</string>
     <string name="Bluetooth_AddressGuitar">98:D3:61:F6:05:D0</string>
     <string name="Bluetooth_AddressNew">98:D3:21:F7:74:AB</string>
@@ -11,4 +11,5 @@
     <string name="camera_permission_available">Camera permission is available. Starting preview.</string>
     <string name="camera_permission_granted">Bluetooth permission was granted.</string>
     <string name="camera_permission_denied">Camera permission request was denied.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
