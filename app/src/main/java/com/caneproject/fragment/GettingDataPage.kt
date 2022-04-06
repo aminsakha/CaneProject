@@ -46,7 +46,6 @@ class GettingDataPage : Fragment() {
                 MakeConnectionToModulo(myContext as Activity, myContext)
             makeConnectionToModulo!!.execute()
         }
-
     }
 
     override fun onDestroyView() {
