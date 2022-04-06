@@ -40,6 +40,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation fileTree(dir: 'C:\\Users\\amins\\StudioProjects\\CaneProject\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
     def appCenterSdkVersion = '4.3.1'
     api 'com.otaliastudios:cameraview:2.7.2'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
