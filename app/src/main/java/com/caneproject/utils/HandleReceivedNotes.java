@@ -1,8 +1,6 @@
 package com.caneproject.utils;
 
-import static com.caneproject.fragment.GettingDataPageKt.getAdapter;
-import static com.caneproject.fragment.GettingDataPageKt.getReceivedNotes;
-import static com.caneproject.fragment.GettingDataPageKt.getRecyclerView;
+import static com.caneproject.fragment.GettingDataPageKt.setTexts;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
 import android.bluetooth.BluetoothSocket;
@@ -16,12 +14,13 @@ import java.util.List;
 
 public class HandleReceivedNotes {
     static int counter = 1;
+    static int dataCount = 1;
 
     public static void beginListenForData(BluetoothSocket socket) {
         final Handler handler = new Handler();
         final Data[] currentData = {new Data("", "", "", "", "", "", "", "")};
-        getReceivedNotes().add(currentData[0]);
-        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
+
+
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -32,10 +31,11 @@ public class HandleReceivedNotes {
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
+                            setTexts(String.valueOf(dataCount), currentData[0].getLed(), currentData[0].getIr(), currentData[0].getWhite()
+                                    , currentData[0].getK(), currentData[0].getRed(), currentData[0].getGreen(), currentData[0].getBlue(), currentData[0].getResultColor());
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
-                            getReceivedNotes().add(currentData[0]);
                             counter = 1;
-                            handler.post(() -> getRecyclerView().smoothScrollToPosition(getAdapter().getItemCount()));
+                            dataCount++;
                         }
                         List<String> curStatus = processOnString(receivedString);
                         for (String status : curStatus) {
@@ -44,7 +44,6 @@ public class HandleReceivedNotes {
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }
-                        handler.post(() -> getAdapter().notifyItemChanged(getReceivedNotes().size() - 1));
                     }
                 } catch (Exception ignored) {
                 }
