@@ -17,9 +17,6 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    lintOptions {
-        checkReleaseBuilds false
-    }
     buildTypes {
         release {
             minifyEnabled true
@@ -33,6 +30,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    lint {
+        checkReleaseBuilds false
     }
 }
 
