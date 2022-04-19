@@ -83,7 +83,7 @@ public class MakeConnectionToModulo extends AsyncTask<Void, Void, Void> {
         } else {
             toastShower(context, "Connected");
             isConnected = true;
-            HandleReceivedNotes.beginListenForData(socket);
+            HandleReceivedNotes.beginListenForData(socket,context);
         }
         progress.dismiss();
     }

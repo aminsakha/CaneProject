@@ -1,5 +1,8 @@
 package com.caneproject.classes
 
+import android.net.Uri
+import java.net.URI
+
 class Data(
     var White: String,
     var Red: String,
@@ -10,6 +13,7 @@ class Data(
     var led: String,
     var resultColor: String,
 ) {
+    var uri: Uri?=null
     fun setDataAttribute(counter: Int, attribute: String) {
         when (counter) {
             1 -> White = attribute

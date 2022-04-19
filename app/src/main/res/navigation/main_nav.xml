@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/dataAnaliticsPage"
-        android:name="com.caneproject.fragment.dataAnaliticsPage"
+        android:name="com.caneproject.fragment.DataAnalyticPage"
         android:label="fragment_data_analitics_page"
         tools:layout="@layout/fragment_data_analitics_page" />
 </navigation>
