@@ -1,25 +1,39 @@
 package com.caneproject.fragment
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.MakeConnectionToModulo
+import java.io.File
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
-
-typealias LumaListener = (luma: Double) -> Unit
+import java.util.concurrent.Executors
 
 private var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
-private fun takePhoto() {}
-
 var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
@@ -42,19 +56,111 @@ class GettingDataPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val tmp = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
-                DateFormat.getDateTimeInstance().format(Date()).substring(11)
+                DateFormat.getDateTimeInstance().format(Date()).substring(12)
         binding.dateBox.text = tmp
 //        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
 //            makeConnectionToModulo =
 //                MakeConnectionToModulo(myContext as Activity, myContext)
 //            makeConnectionToModulo!!.execute()
 //        }
+        startCamera()
+        cameraExecutor = Executors.newSingleThreadExecutor()
+        binding.countBox.setOnClickListener { takePhoto() }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         cameraExecutor.shutdown()
         _binding = null
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(myContext)
+
+        cameraProviderFuture.addListener({
+            // Used to bind the lifecycle of cameras to the lifecycle owner
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            // Preview
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding.camera.surfaceProvider)
+                }
+
+            imageCapture = ImageCapture.Builder()
+                .build()
+
+            // Select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            try {
+                // Unbind use cases before rebinding
+                cameraProvider.unbindAll()
+
+                // Bind use cases to camera
+                cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, imageCapture
+                )
+
+            } catch (exc: Exception) {
+                Log.e("capture", "Use case binding failed", exc)
+            }
+
+        }, ContextCompat.getMainExecutor(myContext))
+    }
+
+    private fun takePhoto() {
+        // Get a stable reference of the modifiable image capture use case
+        val imageCapture = imageCapture ?: return
+
+        // Create time stamped name and MediaStore entry.
+        val name = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US)
+            .format(System.currentTimeMillis())
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+            }
+        }
+
+        // Create output options object which contains file + metadata
+        val outputOptions = activity?.let {
+            ImageCapture.OutputFileOptions
+                .Builder(
+                    it.contentResolver,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    contentValues
+                )
+                .build()
+        }
+
+        if (outputOptions != null) {
+            imageCapture.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(myContext),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e("capture", "Photo capture failed: ${exc.message}", exc)
+                    }
+
+                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+
+                        val savedUri = Uri.fromFile(
+                            File(
+                                "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path}/CameraX-Image",
+                                "${name}.jpg"
+                            )
+                        )
+                        binding.imageView.setImageURI(savedUri)
+                        val msg = "Photo capture succeeded: ${output.savedUri}"
+                        Toast.makeText(myContext, msg, Toast.LENGTH_SHORT).show()
+                        Log.d("capture", msg)
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -64,5 +170,3 @@ fun setTexts(vararg string: String) {
     binding.textView3.text =
         "${string[3]} , ${string[4]}  ,${string[5]}  ,${string[6]} , ${string[7]} ,${string[8]} "
 }
-
-

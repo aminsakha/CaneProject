@@ -7,7 +7,9 @@ import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.caneproject.R
 import com.caneproject.classes.Data
+import java.io.File
 import java.io.FileOutputStream
 
 var tmpArr = mutableListOf<String>()
