@@ -18,7 +18,7 @@ import java.util.List;
 public class HandleReceivedNotes {
     static int counter = 1;
     static int dataCount = 1;
-    static Data[]currentData;
+    static Data[] currentData;
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
@@ -36,6 +36,7 @@ public class HandleReceivedNotes {
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
                             DataAnalyticPageKt.getDataList().add(currentData[0]);
+                            Log.d("beginListenForData", String.valueOf(currentData[0].getUri()));
                             setTexts(String.valueOf(dataCount), currentData[0].getLed(), currentData[0].getIr(), currentData[0].getWhite()
                                     , currentData[0].getK(), currentData[0].getRed(), currentData[0].getGreen(), currentData[0].getBlue(), currentData[0].getResultColor());
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
@@ -47,7 +48,7 @@ public class HandleReceivedNotes {
                             if (counter == 1 && !status.endsWith("W"))
                                 continue;
                             if (counter == 1 && status.endsWith("W"))
-                               takePhoto(context);
+                                takePhoto(context);
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }
