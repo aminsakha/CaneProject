@@ -18,10 +18,11 @@ import java.util.List;
 public class HandleReceivedNotes {
     static int counter = 1;
     static int dataCount = 1;
+    static Data[]currentData;
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
-        final Data[] currentData = {new Data("", "", "", "", "", "", "", "")};
+        currentData = new Data[]{new Data("", "", "", "", "", "", "", "")};
 
 
         Thread thread = new Thread(() -> {
@@ -46,9 +47,8 @@ public class HandleReceivedNotes {
                             if (counter == 1 && !status.endsWith("W"))
                                 continue;
                             if (counter == 1 && status.endsWith("W"))
-                                currentData[0].setUri(takePhoto(context));
+                               takePhoto(context);
                             currentData[0].setDataAttribute(counter, status);
-                            // agar alks ngreft handler bzar
                             counter++;
                         }
                     }

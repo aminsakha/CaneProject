@@ -113,6 +113,7 @@ fun takePhoto(myContext: Context): Uri? {
                     )
                 )
                 uriResult = savedUri
+                HandleReceivedNotes.currentData[0].uri=savedUri
             }
         }
     )
