@@ -1,26 +1,14 @@
 package com.caneproject.utils
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
-import com.caneproject.BlankFragment
 import com.caneproject.classes.Data
-import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 var tmpArr = mutableListOf<String>()
 fun toastShower(context: Context?, message: String?) {

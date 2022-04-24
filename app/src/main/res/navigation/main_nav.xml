@@ -20,8 +20,8 @@
         android:label="fragment_init_page"
         tools:layout="@layout/fragment_init_page" >
         <action
-            android:id="@+id/action_initPage_to_blankFragment"
-            app:destination="@id/blankFragment" />
+            android:id="@+id/action_initPage_to_gettingDataPage"
+            app:destination="@id/gettingDataPage" />
     </fragment>
     <fragment
         android:id="@+id/dataAnaliticsPage"

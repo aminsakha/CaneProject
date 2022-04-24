@@ -2,14 +2,19 @@ package com.caneproject.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.caneproject.R
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ali.uneversaldatetools.date.JalaliDateTime
+import com.caneproject.adaptors.HardWareModeAdaptor
 import com.caneproject.classes.Data
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
-import com.caneproject.databinding.FragmentGettingDataPageBinding
+import java.lang.IndexOutOfBoundsException
+import java.text.DateFormat
+import java.util.*
 
 var dataList = mutableListOf<Data>()
 
@@ -26,5 +31,28 @@ class DataAnalyticPage : Fragment() {
             myContext = container.context
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val tmp = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
+                DateFormat.getDateTimeInstance().format(Date()).substring(12)
+        binding.DateBox.text = tmp
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        try {
+            for (i in dataList.indices) {
+                dataList[i].uri = uriList[i]
+            }
+        } catch (e: IndexOutOfBoundsException) {
+        }
+
+        val adapter = HardWareModeAdaptor(dataList)
+        binding.dataRecView.adapter = adapter
+        binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
+        val dividerItemDecoration = DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
+        binding.dataRecView.addItemDecoration(dividerItemDecoration)
     }
 }

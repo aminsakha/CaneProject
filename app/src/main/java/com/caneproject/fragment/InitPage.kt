@@ -59,7 +59,7 @@ class InitPage : Fragment() {
     }
 
     private fun startConnection() {
-        changeFragment(binding.ConnectionButton, R.id.action_initPage_to_blankFragment)
+        changeFragment(binding.ConnectionButton, R.id.action_initPage_to_gettingDataPage)
     }
 
     override fun onRequestPermissionsResult(

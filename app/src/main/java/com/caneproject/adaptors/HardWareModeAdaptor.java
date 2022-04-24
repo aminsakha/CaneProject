@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,35 +47,11 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            // viewColorController(holder, position);
+            holder.imageView.setImageURI(dataList.get(position).getUri());
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
-
-   /* private void viewColorController(@NonNull ViewHolder holder, int position) {
-        switch (colorList.get(position).getResultColor()) {
-            case "R":
-                viewColorChanger("#E91B0C", holder.itemView);
-                break;
-            case "G":
-                viewColorChanger("#10C518", holder.itemView);
-                break;
-            case "B":
-                viewColorChanger("#0C8FF3", holder.itemView);
-                break;
-            default:
-                viewColorChanger("t", holder.itemView);
-                break;
-        }
-    }
-
-    private void viewColorChanger(String color, @NonNull View view) {
-        if (color.equals("t"))
-            view.setBackgroundColor(Color.TRANSPARENT);
-        else
-            view.setBackgroundColor(Color.parseColor(color));
-    }*/
 
     @Override
     public int getItemCount() {
@@ -82,6 +60,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView firstPartTV, secondPartTV;
+        ImageView imageView;
         ConstraintLayout constraintLayout;
 
         @SuppressLint("ClickableViewAccessibility")
@@ -89,6 +68,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
             super(itemView);
             firstPartTV = itemView.findViewById(R.id.firstPart);
             secondPartTV = itemView.findViewById(R.id.secondPart);
+            imageView = itemView.findViewById(R.id.imageView);
             constraintLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
