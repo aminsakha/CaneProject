@@ -39,7 +39,8 @@ private lateinit var cameraExecutor: ExecutorService
 var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
-
+var dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
+        DateFormat.getDateTimeInstance().format(Date()).substring(12)
 class GettingDataPage : Fragment() {
 
     private lateinit var myContext: Context

@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ali.uneversaldatetools.date.JalaliDateTime
+import com.caneproject.R
 import com.caneproject.adaptors.HardWareModeAdaptor
 import com.caneproject.classes.Data
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
@@ -19,6 +22,7 @@ import java.util.*
 var dataList = mutableListOf<Data>()
 
 class DataAnalyticPage : Fragment() {
+
     var _binding: FragmentDataAnaliticsPageBinding? = null
     val binding get() = _binding!!
     private lateinit var myContext: Context
@@ -35,9 +39,8 @@ class DataAnalyticPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val tmp = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
-                DateFormat.getDateTimeInstance().format(Date()).substring(12)
-        binding.DateBox.text = tmp
+
+        binding.DateBox.text = dateAndTime
         initRecyclerView()
     }
 
