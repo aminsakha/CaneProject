@@ -67,10 +67,10 @@ class GettingDataPage : Fragment() {
         startCamera()
 
 
-        binding.countBox.setOnClickListener {
+        binding.endBTN.setOnClickListener {
             disconnect()
             changeFragment(
-                binding.dateBox,
+                binding.endBTN,
                 R.id.action_gettingDataPage_to_dataAnaliticsPage
             )
         }
@@ -181,10 +181,7 @@ fun takingPhoto(context: Context) {
     Log.d("beginListenForData", "into taking")
 }
 
-fun setTexts(vararg string: String) {
-    binding.countBox.text = string[0]
-    binding.textView2.text = "${string[1]} , ${string[2]}"
-    binding.textView3.text =
-        "${string[3]} , ${string[4]}  ,${string[5]}  ,${string[6]} , ${string[7]} ,${string[8]} "
+fun setTexts(string: String) {
+    binding.countBox.text = string
 }
 

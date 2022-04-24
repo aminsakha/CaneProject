@@ -34,12 +34,10 @@ public class HandleReceivedNotes {
                         byte[] rawBytes = new byte[byteCount];
                         socket.getInputStream().read(rawBytes);
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
-                        //Log.d("beginListenForData", "received: " + receivedString);
+                        Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
                             DataAnalyticPageKt.getDataList().add(currentData[0]);
-                           // Log.d("beginListenForData", currentData[0].getUri().toString());
-
-
+                            handler.post(() -> setTexts(String.valueOf(dataCount)));
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
                             counter = 1;
                             dataCount++;
