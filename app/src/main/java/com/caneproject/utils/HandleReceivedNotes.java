@@ -1,14 +1,14 @@
 package com.caneproject.utils;
 
-import static com.caneproject.fragment.GettingDataPageKt.setTexts;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
-import static com.caneproject.utils.UtilityFunctionsKt.takePhoto;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.caneproject.BlankFragment;
+import com.caneproject.BlankFragmentKt;
 import com.caneproject.classes.Data;
 import com.caneproject.fragment.DataAnalyticPageKt;
 
@@ -33,12 +33,11 @@ public class HandleReceivedNotes {
                         byte[] rawBytes = new byte[byteCount];
                         socket.getInputStream().read(rawBytes);
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
-                        Log.d("beginListenForData", "received: " + receivedString);
+                        //Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
-                            DataAnalyticPageKt.getDataList().add(currentData[0]);
-                            Log.d("beginListenForData", String.valueOf(currentData[0].getUri()));
-                            setTexts(String.valueOf(dataCount), currentData[0].getLed(), currentData[0].getIr(), currentData[0].getWhite()
-                                    , currentData[0].getK(), currentData[0].getRed(), currentData[0].getGreen(), currentData[0].getBlue(), currentData[0].getResultColor());
+                            handler.post(() -> DataAnalyticPageKt.getDataList().add(currentData[0]));
+                            Log.d("beginListenForData", currentData[0].getUri().toString());
+                            BlankFragmentKt.setTexts(String.valueOf(dataCount));
                             currentData[0] = new Data("", "", "", "", "", "", "", "");
                             counter = 1;
                             dataCount++;
@@ -47,8 +46,8 @@ public class HandleReceivedNotes {
                         for (String status : curStatus) {
                             if (counter == 1 && !status.endsWith("W"))
                                 continue;
-                            if (counter == 1 && status.endsWith("W"))
-                                takePhoto(context);
+                            handler.post(() -> BlankFragmentKt.takingPhoto(context));
+
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }

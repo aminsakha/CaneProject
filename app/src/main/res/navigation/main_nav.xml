@@ -20,12 +20,17 @@
         android:label="fragment_init_page"
         tools:layout="@layout/fragment_init_page" >
         <action
-            android:id="@+id/action_initPage_to_gettingDataPage"
-            app:destination="@id/gettingDataPage" />
+            android:id="@+id/action_initPage_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/dataAnaliticsPage"
         android:name="com.caneproject.fragment.DataAnalyticPage"
         android:label="fragment_data_analitics_page"
         tools:layout="@layout/fragment_data_analitics_page" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.caneproject.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
 </navigation>

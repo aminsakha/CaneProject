@@ -35,6 +35,7 @@ class InitPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("onDestroyView", "onDestroyView: created")
         val arr = listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
         binding.ConnectionButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
@@ -58,7 +59,7 @@ class InitPage : Fragment() {
     }
 
     private fun startConnection() {
-        changeFragment(binding.ConnectionButton, R.id.action_initPage_to_gettingDataPage)
+        changeFragment(binding.ConnectionButton, R.id.action_initPage_to_blankFragment)
     }
 
     override fun onRequestPermissionsResult(
