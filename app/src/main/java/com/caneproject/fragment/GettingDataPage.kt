@@ -41,6 +41,7 @@ var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
 var dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
         DateFormat.getDateTimeInstance().format(Date()).substring(12)
+
 class GettingDataPage : Fragment() {
 
     private lateinit var myContext: Context
@@ -59,11 +60,12 @@ class GettingDataPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
-            makeConnectionToModulo =
-                MakeConnectionToModulo(myContext as Activity, myContext)
-            makeConnectionToModulo!!.execute()
-        }
+//        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
+//            makeConnectionToModulo =
+//                MakeConnectionToModulo(myContext as Activity, myContext)
+//            makeConnectionToModulo!!.execute()
+//        }
+        binding.countBox.setOnClickListener { takingPhoto(myContext) }
         cameraExecutor = Executors.newSingleThreadExecutor()
         startCamera()
 

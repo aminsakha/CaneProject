@@ -1,6 +1,7 @@
 package com.caneproject.adaptors;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.caneproject.classes.Data;
 import com.caneproject.R;
 
@@ -19,9 +21,11 @@ import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
     static List<Data> dataList;
+    Context context;
 
-    public HardWareModeAdaptor(List<Data> myNoteList) {
+    public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
         HardWareModeAdaptor.dataList = myNoteList;
+        this.context = context;
         setHasStableIds(true);
     }
 
@@ -47,7 +51,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            holder.imageView.setImageURI(dataList.get(position).getUri());
+            Glide.with(context).load(dataList.get(position).getUri()).into(holder.imageView);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }

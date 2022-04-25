@@ -45,6 +45,10 @@ class DataAnalyticPage : Fragment() {
     }
 
     private fun initRecyclerView() {
+        dataList.add(Data("", "", "", "", "", "", "", ""))
+        dataList.add(Data("", "", "", "", "", "", "", ""))
+        dataList.add(Data("", "", "", "", "", "", "", ""))
+
         try {
             for (i in dataList.indices) {
                 dataList[i].uri = uriList[i]
@@ -52,7 +56,8 @@ class DataAnalyticPage : Fragment() {
         } catch (e: IndexOutOfBoundsException) {
         }
 
-        val adapter = HardWareModeAdaptor(dataList)
+
+        val adapter = HardWareModeAdaptor(dataList, myContext)
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration = DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
