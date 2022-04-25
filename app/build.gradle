@@ -38,6 +38,9 @@ android {
 dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
+    implementation ("com.github.bumptech.glide:glide:4.11.0") {
+        exclude group: "com.android.support"
+    }
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation fileTree(dir: 'C:\\Users\\amins\\StudioProjects\\CaneProject\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
     def appCenterSdkVersion = '4.3.1'

@@ -1,25 +1,40 @@
 package com.caneproject.adaptors;
 
+import static com.caneproject.activities.MainActivityKt.getScreenHeight;
+import static com.caneproject.activities.MainActivityKt.getScreenWidth;
+import static com.caneproject.utils.GlideFunctionsKt.loadImageForRecView;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.caneproject.classes.Data;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.caneproject.R;
+import com.caneproject.classes.Data;
+import com.caneproject.utils.GlideFunctionsKt;
+import com.caneproject.utils.UtilityFunctionsKt;
 
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
     static List<Data> dataList;
+    Context context;
 
-    public HardWareModeAdaptor(List<Data> myNoteList) {
+
+    public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
         HardWareModeAdaptor.dataList = myNoteList;
+        this.context = context;
         setHasStableIds(true);
     }
 
@@ -45,35 +60,11 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            // viewColorController(holder, position);
+            loadImageForRecView(context, dataList.get(position).getUri(), holder.imageView);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
-
-   /* private void viewColorController(@NonNull ViewHolder holder, int position) {
-        switch (colorList.get(position).getResultColor()) {
-            case "R":
-                viewColorChanger("#E91B0C", holder.itemView);
-                break;
-            case "G":
-                viewColorChanger("#10C518", holder.itemView);
-                break;
-            case "B":
-                viewColorChanger("#0C8FF3", holder.itemView);
-                break;
-            default:
-                viewColorChanger("t", holder.itemView);
-                break;
-        }
-    }
-
-    private void viewColorChanger(String color, @NonNull View view) {
-        if (color.equals("t"))
-            view.setBackgroundColor(Color.TRANSPARENT);
-        else
-            view.setBackgroundColor(Color.parseColor(color));
-    }*/
 
     @Override
     public int getItemCount() {
@@ -82,6 +73,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView firstPartTV, secondPartTV;
+        ImageView imageView;
         ConstraintLayout constraintLayout;
 
         @SuppressLint("ClickableViewAccessibility")
@@ -89,6 +81,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
             super(itemView);
             firstPartTV = itemView.findViewById(R.id.firstPart);
             secondPartTV = itemView.findViewById(R.id.secondPart);
+            imageView = itemView.findViewById(R.id.imageView);
             constraintLayout = itemView.findViewById(R.id.parent_layout);
         }
     }

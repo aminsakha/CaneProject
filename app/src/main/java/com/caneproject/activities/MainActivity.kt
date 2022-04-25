@@ -3,10 +3,13 @@ package com.caneproject.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.caneproject.R
+import com.caneproject.utils.getScreenHeight
+import com.caneproject.utils.getScreenWidth
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
-
+var screenHeight=0
+var screenWidth=0
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +20,7 @@ class MainActivity : AppCompatActivity() {
             Analytics::class.java,
             Crashes::class.java
         )
-
+        screenHeight= getScreenHeight()
+        screenWidth= getScreenWidth()
     }
 }
