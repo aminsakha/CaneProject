@@ -3,13 +3,12 @@ package com.caneproject.utils;
 import static com.caneproject.fragment.GettingDataPageKt.setTexts;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.caneproject.classes.Data;
+import com.caneproject.classes.DataClass;
 import com.caneproject.fragment.DataAnalyticPageKt;
 import com.caneproject.fragment.GettingDataPageKt;
 
@@ -19,11 +18,11 @@ import java.util.List;
 public class HandleReceivedNotes {
     static int counter = 1;
     static int dataCount = 1;
-    public static Data[] currentData;
+    public static DataClass[] currentData;
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
-        currentData = new Data[]{new Data("", "", "", "", "", "", "", "")};
+        currentData = new DataClass[]{new DataClass("", "", "", "", "", "", "", "")};
 
 
         Thread thread = new Thread(() -> {
@@ -38,7 +37,7 @@ public class HandleReceivedNotes {
                         if (counter > 8) {
                             DataAnalyticPageKt.getDataList().add(currentData[0]);
                             handler.post(() -> setTexts(String.valueOf(dataCount)));
-                            currentData[0] = new Data("", "", "", "", "", "", "", "");
+                            currentData[0] = new DataClass("", "", "", "", "", "", "", "");
                             counter = 1;
                             dataCount++;
                         }

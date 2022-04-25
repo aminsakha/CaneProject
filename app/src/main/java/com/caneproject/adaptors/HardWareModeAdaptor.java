@@ -1,7 +1,5 @@
 package com.caneproject.adaptors;
 
-import static com.caneproject.activities.MainActivityKt.getScreenHeight;
-import static com.caneproject.activities.MainActivityKt.getScreenWidth;
 import static com.caneproject.utils.GlideFunctionsKt.loadImageForRecView;
 
 import android.annotation.SuppressLint;
@@ -16,23 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.caneproject.R;
-import com.caneproject.classes.Data;
-import com.caneproject.utils.GlideFunctionsKt;
-import com.caneproject.utils.UtilityFunctionsKt;
+import com.caneproject.classes.DataClass;
 
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
-    static List<Data> dataList;
+    static List<DataClass> dataList;
     Context context;
 
 
-    public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
+    public HardWareModeAdaptor(List<DataClass> myNoteList, Context context) {
         HardWareModeAdaptor.dataList = myNoteList;
         this.context = context;
         setHasStableIds(true);

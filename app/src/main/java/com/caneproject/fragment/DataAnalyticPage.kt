@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.HardWareModeAdaptor
-import com.caneproject.classes.Data
+import com.caneproject.classes.DataClass
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 
-var dataList = mutableListOf<Data>()
+var dataList = mutableListOf<DataClass>()
 
 class DataAnalyticPage : Fragment() {
 

@@ -3,7 +3,7 @@ package com.caneproject.classes
 import android.net.Uri
 import java.net.URI
 
-class Data(
+class DataClass(
     var White: String,
     var Red: String,
     var Green: String,
