@@ -64,10 +64,9 @@ class GettingDataPage : Fragment() {
                 MakeConnectionToModulo(myContext as Activity, myContext)
             makeConnectionToModulo!!.execute()
         }
-        binding.countBox.setOnClickListener { takingPhoto(myContext) }
+
         cameraExecutor = Executors.newSingleThreadExecutor()
         startCamera()
-
 
         binding.endBTN.setOnClickListener {
             disconnect()

@@ -2,6 +2,7 @@ package com.caneproject.adaptors;
 
 import static com.caneproject.activities.MainActivityKt.getScreenHeight;
 import static com.caneproject.activities.MainActivityKt.getScreenWidth;
+import static com.caneproject.utils.GlideFunctionsKt.loadImageForRecView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.caneproject.R;
 import com.caneproject.classes.Data;
+import com.caneproject.utils.GlideFunctionsKt;
 import com.caneproject.utils.UtilityFunctionsKt;
 
 import java.util.List;
@@ -58,9 +60,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            Glide.with(context).load(dataList.get(position).getUri()).apply(RequestOptions.bitmapTransform
-                    (new RoundedCorners(15))).
-                    override(getScreenWidth() / 4, (int) ((getScreenHeight() / 2)*0.9)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+            loadImageForRecView(context, dataList.get(position).getUri(), holder.imageView);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
