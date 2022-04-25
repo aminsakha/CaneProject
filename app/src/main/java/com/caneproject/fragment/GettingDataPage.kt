@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
 import com.caneproject.databinding.FragmentGettingDataPageBinding
-import com.caneproject.utils.HandleReceivedNotes
 import com.caneproject.utils.MakeConnectionToModulo
 import com.caneproject.utils.changeFragment
 import com.caneproject.utils.toastShower
@@ -60,11 +59,11 @@ class GettingDataPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-//        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
-//            makeConnectionToModulo =
-//                MakeConnectionToModulo(myContext as Activity, myContext)
-//            makeConnectionToModulo!!.execute()
-//        }
+        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
+            makeConnectionToModulo =
+                MakeConnectionToModulo(myContext as Activity, myContext)
+            makeConnectionToModulo!!.execute()
+        }
         binding.countBox.setOnClickListener { takingPhoto(myContext) }
         cameraExecutor = Executors.newSingleThreadExecutor()
         startCamera()
@@ -185,6 +184,6 @@ fun takingPhoto(context: Context) {
 }
 
 fun setTexts(string: String) {
-    binding.countBox.text = string
+    "Data Number : $string".also { binding.countBox.text = it }
 }
 

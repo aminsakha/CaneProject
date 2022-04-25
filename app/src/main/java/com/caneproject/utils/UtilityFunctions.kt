@@ -3,12 +3,14 @@ package com.caneproject.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.caneproject.classes.Data
 import java.io.FileOutputStream
+
 
 var tmpArr = mutableListOf<String>()
 fun toastShower(context: Context?, message: String?) {
@@ -60,3 +62,10 @@ fun processOnString(string: String): MutableList<String> {
 
 fun changeFragment(view: View, action: Int) = Navigation.findNavController(view).navigate(action)
 
+fun getScreenWidth(): Int {
+    return Resources.getSystem().displayMetrics.widthPixels
+}
+
+fun getScreenHeight(): Int {
+    return Resources.getSystem().displayMetrics.heightPixels
+}

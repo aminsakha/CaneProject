@@ -1,11 +1,13 @@
 package com.caneproject.adaptors;
 
+import static com.caneproject.activities.MainActivityKt.getScreenHeight;
+import static com.caneproject.activities.MainActivityKt.getScreenWidth;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +16,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.caneproject.classes.Data;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.caneproject.R;
+import com.caneproject.classes.Data;
+import com.caneproject.utils.UtilityFunctionsKt;
 
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
     static List<Data> dataList;
     Context context;
+
 
     public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
         HardWareModeAdaptor.dataList = myNoteList;
@@ -51,7 +58,9 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            Glide.with(context).load(dataList.get(position).getUri()).into(holder.imageView);
+            Glide.with(context).load(dataList.get(position).getUri()).apply(RequestOptions.bitmapTransform
+                    (new RoundedCorners(15))).
+                    override(getScreenWidth() / 4, (int) ((getScreenHeight() / 2)*0.9)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }

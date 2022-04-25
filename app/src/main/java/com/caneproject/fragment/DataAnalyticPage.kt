@@ -5,19 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ali.uneversaldatetools.date.JalaliDateTime
-import com.caneproject.R
 import com.caneproject.adaptors.HardWareModeAdaptor
 import com.caneproject.classes.Data
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
-import java.lang.IndexOutOfBoundsException
-import java.text.DateFormat
-import java.util.*
 
 var dataList = mutableListOf<Data>()
 
@@ -45,18 +38,12 @@ class DataAnalyticPage : Fragment() {
     }
 
     private fun initRecyclerView() {
-        dataList.add(Data("", "", "", "", "", "", "", ""))
-        dataList.add(Data("", "", "", "", "", "", "", ""))
-        dataList.add(Data("", "", "", "", "", "", "", ""))
-
         try {
             for (i in dataList.indices) {
                 dataList[i].uri = uriList[i]
             }
         } catch (e: IndexOutOfBoundsException) {
         }
-
-
         val adapter = HardWareModeAdaptor(dataList, myContext)
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
