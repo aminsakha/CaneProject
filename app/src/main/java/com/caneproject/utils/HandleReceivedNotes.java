@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.caneproject.classes.DataClass;
+import com.caneproject.db.Data;
 import com.caneproject.fragment.DataAnalyticPageKt;
 import com.caneproject.fragment.GettingDataPageKt;
 
@@ -18,11 +19,11 @@ import java.util.List;
 public class HandleReceivedNotes {
     static int counter = 1;
     static int dataCount = 1;
-    public static DataClass[] currentData;
+    public static Data[] currentData;
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
-        currentData = new DataClass[]{new DataClass("", "", "", "", "", "", "", "")};
+        currentData = new Data[]{new Data("", "", "", "", "", "", "", "", "", true)};
 
 
         Thread thread = new Thread(() -> {
@@ -37,7 +38,7 @@ public class HandleReceivedNotes {
                         if (counter > 8) {
                             DataAnalyticPageKt.getDataList().add(currentData[0]);
                             handler.post(() -> setTexts(String.valueOf(dataCount)));
-                            currentData[0] = new DataClass("", "", "", "", "", "", "", "");
+                            currentData[0] = new Data("", "", "", "", "", "", "", "", "", true);
                             counter = 1;
                             dataCount++;
                         }

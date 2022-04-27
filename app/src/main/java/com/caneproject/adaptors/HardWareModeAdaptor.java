@@ -4,6 +4,7 @@ import static com.caneproject.utils.GlideFunctionsKt.loadImageForRecView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.caneproject.R;
 import com.caneproject.classes.DataClass;
+import com.caneproject.db.Data;
 
 import java.util.List;
 
 public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
-    static List<DataClass> dataList;
+    static List<Data> dataList;
     Context context;
 
 
-    public HardWareModeAdaptor(List<DataClass> myNoteList, Context context) {
+    public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
         HardWareModeAdaptor.dataList = myNoteList;
         this.context = context;
         setHasStableIds(true);
@@ -52,7 +54,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
         try {
             holder.firstPartTV.setText(dataList.get(position).toString());
             holder.secondPartTV.setText(dataList.get(position).toStringForSecondPart());
-            loadImageForRecView(context, dataList.get(position).getUri(), holder.imageView);
+            loadImageForRecView(context, Uri.parse(dataList.get(position).getUriString()), holder.imageView);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }

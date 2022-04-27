@@ -1,12 +1,24 @@
 package com.caneproject.db
 
-import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 
+@Dao
 interface DaoData {
+    @Insert
+    suspend fun addData(data: Data)
 
-    fun addData(data: Data) {}
+    @Delete
+    suspend fun deleteData(data: Data)
 
     @Query("SELECT * FROM data_table ORDER BY id ASC")
-    fun readData(): LiveData<List<Data>>
+    suspend fun readAllData(): List<Data>
+
+    @Query("UPDATE data_table SET uriString =:newUri WHERE id =:id")
+    suspend fun updateUser(newUri: String, id: Int?)
+
+    @Query("DELETE FROM data_table")
+    suspend fun deleteEntire()
 }

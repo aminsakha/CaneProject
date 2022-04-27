@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:padding="50dp">
+    android:padding="50dp"
+    android:textAlignment="viewStart">
 
     <ImageView
         android:id="@+id/imageView"
@@ -53,8 +54,8 @@
         android:backgroundTint="@color/black"
         android:backgroundTintMode="screen"
         android:entries="@array/colorList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/firstPart"
         app:layout_constraintTop_toTopOf="parent" />
 

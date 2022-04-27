@@ -14,18 +14,7 @@ class DataClass(
     var resultColor: String,
 ) {
     var uri: Uri?=null
-    fun setDataAttribute(counter: Int, attribute: String) {
-        when (counter) {
-            1 -> White = attribute
-            2 -> Red = attribute
-            3 -> Green = attribute
-            4 -> Blue = attribute
-            5 -> k = attribute
-            6 -> ir = attribute
-            7 -> led = attribute
-            8 -> resultColor = attribute
-        }
-    }
+
 
     override fun toString(): String {
         return "$White , $Red , $Green , $Blue "
