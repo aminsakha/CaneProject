@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,6 +67,7 @@ public class DataAnalyticAdaptor extends RecyclerView.Adapter<DataAnalyticAdapto
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView firstPartTV, secondPartTV;
+        Spinner spinner;
         ImageView imageView;
         ConstraintLayout constraintLayout;
 
@@ -73,6 +75,7 @@ public class DataAnalyticAdaptor extends RecyclerView.Adapter<DataAnalyticAdapto
         public ViewHolder(View itemView) {
             super(itemView);
             firstPartTV = itemView.findViewById(R.id.firstPart);
+            spinner = itemView.findViewById(R.id.spinner);
             secondPartTV = itemView.findViewById(R.id.secondPart);
             imageView = itemView.findViewById(R.id.imageView);
             constraintLayout = itemView.findViewById(R.id.parent_layout);

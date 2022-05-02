@@ -1,6 +1,6 @@
 package com.caneproject.utils;
 
-import static com.caneproject.fragment.GettingDataPageKt.setTexts;
+import static com.caneproject.fragment.GettingDataPageKt.setTextBoxText;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
 import static com.caneproject.classes.GlobalVariablesKt.*;
 
@@ -23,7 +23,7 @@ public class HandleReceivedNotes {
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
         currentData = new Data[]{new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true)};
-
+        dataCount = 1;
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -36,7 +36,7 @@ public class HandleReceivedNotes {
                         if (counter > 8) {
                             currentData[0].setDateAndTime(getDateAndTime());
                             getDataList().add(currentData[0]);
-                            handler.post(() -> setTexts(String.valueOf(dataCount)));
+                            handler.post(() -> setTextBoxText(String.valueOf(dataCount)));
                             currentData[0] = new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true);
                             counter = 1;
                             dataCount++;

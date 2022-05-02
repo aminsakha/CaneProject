@@ -57,10 +57,12 @@ class GettingDataPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
-                DateFormat.getDateTimeInstance().format(Date()).substring(12)
+        dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
+                JalaliDateTime.Now().toString().substring(0, 11)
 
-        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
+        if (makeConnectionToModulo == null || makeConnectionToModulo?.socket == null
+            || (makeConnectionToModulo?.isBluetoothOn == false)
+        ) {
             makeConnectionToModulo =
                 MakeConnectionToModulo(myContext as Activity, myContext)
             makeConnectionToModulo!!.execute()
@@ -71,13 +73,16 @@ class GettingDataPage : Fragment() {
 
         binding.endBTN.setOnClickListener {
             disconnect()
-            setUris()
             lifecycleScope.launch {
+                setUris()
                 insertListToDB()
+                toastShower(myContext, "Data Successfully Saved")
                 changeFragment(
                     binding.endBTN,
                     R.id.action_gettingDataPage_to_initPage
                 )
+                dataList.clear()
+                uriList.clear()
             }
         }
     }
@@ -99,38 +104,30 @@ class GettingDataPage : Fragment() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(myContext)
-        Log.d("capture", "startCamera: 102")
         cameraProviderFuture.addListener({
-            Log.d("capture", "startCamera: 104")
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            Log.d("capture", "startCamera: 106")
             // Preview
             val preview = Preview.Builder()
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.camera.surfaceProvider)
                 }
-            Log.d("capture", "startCamera: 114")
             imageCapture = ImageCapture.Builder()
                 .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-            Log.d("capture", "startCamera: 120")
             try {
                 // Unbind use cases before rebinding
-                Log.d("capture", "startCamera: 123")
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture
                 )
-                Log.d("capture", "startCamera: 130")
 
             } catch (exc: Exception) {
-                Log.e("capture", "Use case binding failed")
             }
         }, ContextCompat.getMainExecutor(myContext))
     }
@@ -155,7 +152,6 @@ class GettingDataPage : Fragment() {
                     contentValues
                 )
                 .build()
-        Log.d("beginListenForData", "output")
         var uriResult: Uri? = null
 
         imageCapture.takePicture(
@@ -167,7 +163,6 @@ class GettingDataPage : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    Log.d("beginListenForData", "onSAved")
                     val savedUri = Uri.fromFile(
                         File(
                             "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path}/CameraX-Image",
@@ -176,7 +171,6 @@ class GettingDataPage : Fragment() {
                     )
                     uriResult = savedUri
                     uriList.add(savedUri)
-                    toastShower(myContext, "got  ${uriList.size}")
                 }
             }
         )
@@ -190,25 +184,26 @@ fun takingPhoto(context: Context) {
     Log.d("beginListenForData", "into taking")
 }
 
-fun setTexts(string: String) {
+fun setTextBoxText(string: String) {
     "Data Number : $string".also { binding.countBox.text = it }
 }
 
 private suspend fun insertListToDB() {
     try {
-        Log.d("lifeScope", "db before insert: ${db.dataDao().readAllData()}")
         for (data in dataList) {
             db.dataDao().addData(data)
         }
     } catch (e: Exception) {
     }
-    Log.d("lifeScope", "db after insert: ${db.dataDao().readAllData()}")
 }
 
 private fun setUris() {
     try {
         for (i in dataList.indices) {
-            dataList[i].uriString = uriList[i].toString()
+            if (dataList[i].White.isEmpty())
+                dataList.remove(dataList[i])
+            else
+                dataList[i].uriString = uriList[i].toString()
         }
     } catch (e: IndexOutOfBoundsException) {
     }

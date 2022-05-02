@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caneproject.R;
-import com.caneproject.utils.UtilityFunctionsKt;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class DataManagingAdaptor extends RecyclerView.Adapter<DataManagingAdapto
     @NonNull
     @Override
     public ViewHolderDataManaging onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.data_manager_structure, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.data_managing_structure, parent, false);
         return new ViewHolderDataManaging(view);
     }
 

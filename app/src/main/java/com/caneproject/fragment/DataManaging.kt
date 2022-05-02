@@ -12,14 +12,16 @@ import com.caneproject.classes.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.caneproject.adaptors.DataAnalyticAdaptor
 import com.caneproject.adaptors.DataManagingAdaptor
 import com.caneproject.databinding.FragmentDataManagingBinding
 import com.caneproject.db.Data
 import com.caneproject.db.DataDb
+import com.caneproject.utils.toastShower
 import kotlinx.coroutines.launch
 
 class DataManaging : Fragment() {
-
+    private var adaptor: DataManagingAdaptor = DataManagingAdaptor(emptyList())
     private var _binding: FragmentDataManagingBinding? = null
     private val binding get() = _binding!!
     private lateinit var myContext: Context
@@ -36,17 +38,21 @@ class DataManaging : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.deleteItemBTN.setOnClickListener {
+            lifecycleScope.launch {
+                db.dataDao().deleteEntire()
+                toastShower(myContext, "deleted all the data")
+                initRecyclerView()
+            }
+        }
         lifecycleScope.launch {
-            val tmp = getRecordDates()
-            Log.d("lifeScope", "tmp : $tmp")
-            initRecyclerView(tmp)
+            initRecyclerView()
         }
     }
 
-    private fun initRecyclerView(tmp: MutableList<String>) {
-        val adapter = DataManagingAdaptor(tmp)
-        binding.dataManagingRecView.adapter = adapter
+    private suspend fun initRecyclerView() {
+        adaptor = DataManagingAdaptor(getRecordDates())
+        binding.dataManagingRecView.adapter = adaptor
         binding.dataManagingRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =
             DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
@@ -54,7 +60,6 @@ class DataManaging : Fragment() {
     }
 
     private suspend fun getRecordDates(): MutableList<String> {
-        Log.d("lifeScope", "dates :  : ${db.dataDao().getDates()}")
         return db.dataDao().getDates()
     }
 }
