@@ -35,7 +35,7 @@ public class HandleReceivedNotes {
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
                             currentData[0].setDateAndTime(getDateAndTime());
-                           getDataList().add(currentData[0]);
+                            getDataList().add(currentData[0]);
                             handler.post(() -> setTexts(String.valueOf(dataCount)));
                             currentData[0] = new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true);
                             counter = 1;

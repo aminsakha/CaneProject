@@ -99,35 +99,38 @@ class GettingDataPage : Fragment() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(myContext)
-
+        Log.d("capture", "startCamera: 102")
         cameraProviderFuture.addListener({
+            Log.d("capture", "startCamera: 104")
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
+            Log.d("capture", "startCamera: 106")
             // Preview
             val preview = Preview.Builder()
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.camera.surfaceProvider)
                 }
-
+            Log.d("capture", "startCamera: 114")
             imageCapture = ImageCapture.Builder()
                 .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
+            Log.d("capture", "startCamera: 120")
             try {
                 // Unbind use cases before rebinding
+                Log.d("capture", "startCamera: 123")
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture
                 )
+                Log.d("capture", "startCamera: 130")
 
             } catch (exc: Exception) {
-                Log.e("capture", "Use case binding failed", exc)
+                Log.e("capture", "Use case binding failed")
             }
         }, ContextCompat.getMainExecutor(myContext))
     }
