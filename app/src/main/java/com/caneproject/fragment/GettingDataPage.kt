@@ -60,8 +60,7 @@ class GettingDataPage : Fragment() {
         dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
                 JalaliDateTime.Now().toString().substring(0, 11)
 
-        if (makeConnectionToModulo == null || makeConnectionToModulo?.socket == null
-            || (makeConnectionToModulo?.isBluetoothOn == false)
+        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
         ) {
             makeConnectionToModulo =
                 MakeConnectionToModulo(myContext as Activity, myContext)
@@ -191,7 +190,8 @@ fun setTextBoxText(string: String) {
 private suspend fun insertListToDB() {
     try {
         for (data in dataList) {
-            db.dataDao().addData(data)
+            if (data.White.isNotEmpty())
+                db.dataDao().addData(data)
         }
     } catch (e: Exception) {
     }
@@ -200,10 +200,11 @@ private suspend fun insertListToDB() {
 private fun setUris() {
     try {
         for (i in dataList.indices) {
-            if (dataList[i].White.isEmpty())
-                dataList.remove(dataList[i])
-            else
-                dataList[i].uriString = uriList[i].toString()
+            Log.d("insertListToDB", "size befor : ${dataList.size}")
+            Log.d("insertListToDB", "removed i : $i")
+            Log.d("insertListToDB", "size afe=ter : ${dataList.size}")
+            dataList[i].uriString = uriList[i].toString()
+            Log.d("insertListToDB", "set for i: $i")
         }
     } catch (e: IndexOutOfBoundsException) {
     }
