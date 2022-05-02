@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.caneproject.adaptors.DataAnalyticAdaptor
+import com.caneproject.adaptors.KotlinAdaptorForAnalytic
 import com.caneproject.classes.db
 import com.caneproject.classes.selectedItemInRecView
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
@@ -40,7 +40,7 @@ class DataAnalyticPage : Fragment() {
 
     private suspend fun initRecyclerView() {
         val adapter =
-            DataAnalyticAdaptor(db.dataDao().getRecordInThisDate(selectedItemInRecView), myContext)
+            KotlinAdaptorForAnalytic(db.dataDao().getRecordInThisDate(selectedItemInRecView), myContext)
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =

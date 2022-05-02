@@ -200,11 +200,7 @@ private suspend fun insertListToDB() {
 private fun setUris() {
     try {
         for (i in dataList.indices) {
-            Log.d("insertListToDB", "size befor : ${dataList.size}")
-            Log.d("insertListToDB", "removed i : $i")
-            Log.d("insertListToDB", "size afe=ter : ${dataList.size}")
             dataList[i].uriString = uriList[i].toString()
-            Log.d("insertListToDB", "set for i: $i")
         }
     } catch (e: IndexOutOfBoundsException) {
     }

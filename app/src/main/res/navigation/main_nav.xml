@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_initPage_to_dataManaging"
             app:destination="@id/dataManaging" />
+        <action
+            android:id="@+id/action_initPage_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/dataAnaliticsPage"
@@ -40,4 +43,9 @@
             android:id="@+id/action_dataManaging_to_dataAnaliticsPage"
             app:destination="@id/dataAnaliticsPage" />
     </fragment>
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.caneproject.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
 </navigation>

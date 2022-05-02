@@ -16,8 +16,8 @@ interface DaoData {
     @Query("SELECT * FROM data_table ORDER BY id ASC")
     suspend fun readAllData(): List<Data>
 
-    @Query("UPDATE data_table SET uriString =:newUri WHERE id =:id")
-    suspend fun updateUser(newUri: String, id: Int?)
+    @Query("UPDATE data_table SET trueColor =:newColor WHERE uriString =:uri")
+    suspend fun updateColor(newColor: String, uri:String)
 
     @Query("DELETE FROM data_table")
     suspend fun deleteEntire()

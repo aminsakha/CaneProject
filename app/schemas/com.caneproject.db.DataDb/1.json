@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4aaac14b30fd482a5002e6118a1dbeb4",
+    "identityHash": "2ec1865e506b81b4c77fe5c24700dbc2",
     "entities": [
       {
         "tableName": "data_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`White` TEXT NOT NULL, `Red` TEXT NOT NULL, `Green` TEXT NOT NULL, `Blue` TEXT NOT NULL, `k` TEXT NOT NULL, `ir` TEXT NOT NULL, `led` TEXT NOT NULL, `resultColor` TEXT NOT NULL, `dateAndTime` TEXT NOT NULL, `uriString` TEXT NOT NULL, `isTrueColor` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`White` TEXT NOT NULL, `Red` TEXT NOT NULL, `Green` TEXT NOT NULL, `Blue` TEXT NOT NULL, `k` TEXT NOT NULL, `ir` TEXT NOT NULL, `led` TEXT NOT NULL, `resultColor` TEXT NOT NULL, `dateAndTime` TEXT NOT NULL, `uriString` TEXT NOT NULL, `isTrueColor` INTEGER NOT NULL, `trueColor` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
         "fields": [
           {
             "fieldPath": "White",
@@ -75,6 +75,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "trueColor",
+            "columnName": "trueColor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
@@ -94,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4aaac14b30fd482a5002e6118a1dbeb4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2ec1865e506b81b4c77fe5c24700dbc2')"
     ]
   }
 }

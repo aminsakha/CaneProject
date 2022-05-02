@@ -2,21 +2,16 @@ package com.caneproject.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.caneproject.classes.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.caneproject.adaptors.DataAnalyticAdaptor
 import com.caneproject.adaptors.DataManagingAdaptor
+import com.caneproject.classes.db
 import com.caneproject.databinding.FragmentDataManagingBinding
-import com.caneproject.db.Data
-import com.caneproject.db.DataDb
 import com.caneproject.utils.toastShower
 import kotlinx.coroutines.launch
 

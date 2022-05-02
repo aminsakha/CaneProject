@@ -16,14 +16,15 @@ data class Data(
     var resultColor: String,
     var dateAndTime:String,
     var uriString: String,
-    var isTrueColor: Boolean
+    var isTrueColor: Boolean,
+    var trueColor: String
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int? = null
     override fun toString(): String {
         return "$White , $Red , $Green , $Blue "
     }
     fun toStringForSecondPart(): String {
-        return "$k , $ir , $led , $resultColor "
+        return "$k , $ir , $led , $trueColor "
     }
 
     fun setDataAttribute(counter: Int, attribute: String) {

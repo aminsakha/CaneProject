@@ -44,19 +44,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+    <Button
+        android:id="@+id/selectColorBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="@color/black"
-        android:backgroundTintMode="screen"
-        android:entries="@array/colorList"
-        android:textAlignment="viewStart"
+        android:text="Button"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/firstPart"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
