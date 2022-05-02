@@ -8,7 +8,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.caneproject.classes.DataClass
+import com.caneproject.db.Data
 import java.io.FileOutputStream
 
 
@@ -28,7 +28,7 @@ fun writeToFile(context: Context?, uri: Uri, content: String) {
 
 fun saveToFile(
     context: Context?,
-    list: MutableList<DataClass>,
+    list: MutableList<Data>,
     requestCode: Int,
     resultCode: Int,
     data: Intent?

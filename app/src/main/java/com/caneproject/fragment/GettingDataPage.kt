@@ -19,12 +19,15 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.MakeConnectionToModulo
 import com.caneproject.utils.changeFragment
 import com.caneproject.utils.toastShower
+import com.caneproject.classes.*
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -32,17 +35,14 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-var uriList = mutableListOf<Uri>()
 var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
 var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
-var dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
-        DateFormat.getDateTimeInstance().format(Date()).substring(12)
+
 
 class GettingDataPage : Fragment() {
-
     private lateinit var myContext: Context
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +57,8 @@ class GettingDataPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
+                DateFormat.getDateTimeInstance().format(Date()).substring(12)
 
         if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
             makeConnectionToModulo =
@@ -70,10 +71,14 @@ class GettingDataPage : Fragment() {
 
         binding.endBTN.setOnClickListener {
             disconnect()
-            changeFragment(
-                binding.endBTN,
-                R.id.action_gettingDataPage_to_dataAnaliticsPage
-            )
+            setUris()
+            lifecycleScope.launch {
+                insertListToDB()
+                changeFragment(
+                    binding.endBTN,
+                    R.id.action_gettingDataPage_to_initPage
+                )
+            }
         }
     }
 
@@ -186,3 +191,22 @@ fun setTexts(string: String) {
     "Data Number : $string".also { binding.countBox.text = it }
 }
 
+private suspend fun insertListToDB() {
+    try {
+        Log.d("lifeScope", "db before insert: ${db.dataDao().readAllData()}")
+        for (data in dataList) {
+            db.dataDao().addData(data)
+        }
+    } catch (e: Exception) {
+    }
+    Log.d("lifeScope", "db after insert: ${db.dataDao().readAllData()}")
+}
+
+private fun setUris() {
+    try {
+        for (i in dataList.indices) {
+            dataList[i].uriString = uriList[i].toString()
+        }
+    } catch (e: IndexOutOfBoundsException) {
+    }
+}

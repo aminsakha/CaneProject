@@ -16,18 +16,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.caneproject.R;
-import com.caneproject.classes.DataClass;
 import com.caneproject.db.Data;
 
 import java.util.List;
 
-public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdaptor.ViewHolder> {
+public class DataAnalyticAdaptor extends RecyclerView.Adapter<DataAnalyticAdaptor.ViewHolder> {
     static List<Data> dataList;
     Context context;
 
 
-    public HardWareModeAdaptor(List<Data> myNoteList, Context context) {
-        HardWareModeAdaptor.dataList = myNoteList;
+    public DataAnalyticAdaptor(List<Data> myNoteList, Context context) {
+        DataAnalyticAdaptor.dataList = myNoteList;
         this.context = context;
         setHasStableIds(true);
     }
@@ -45,7 +44,7 @@ public class HardWareModeAdaptor extends RecyclerView.Adapter<HardWareModeAdapto
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.data_structure_in_rec_view, parent, false);
         return new ViewHolder(view);
     }
 

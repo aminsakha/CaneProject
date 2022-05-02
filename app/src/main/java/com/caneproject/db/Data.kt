@@ -14,6 +14,7 @@ data class Data(
     var ir: String,
     var led: String,
     var resultColor: String,
+    var dateAndTime:String,
     var uriString: String,
     var isTrueColor: Boolean
 ) {
@@ -24,6 +25,7 @@ data class Data(
     fun toStringForSecondPart(): String {
         return "$k , $ir , $led , $resultColor "
     }
+
     fun setDataAttribute(counter: Int, attribute: String) {
         when (counter) {
             1 -> White = attribute

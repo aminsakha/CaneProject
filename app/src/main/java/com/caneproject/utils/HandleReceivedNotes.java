@@ -2,15 +2,14 @@ package com.caneproject.utils;
 
 import static com.caneproject.fragment.GettingDataPageKt.setTexts;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
+import static com.caneproject.classes.GlobalVariablesKt.*;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.caneproject.classes.DataClass;
 import com.caneproject.db.Data;
-import com.caneproject.fragment.DataAnalyticPageKt;
 import com.caneproject.fragment.GettingDataPageKt;
 
 import java.nio.charset.StandardCharsets;
@@ -23,8 +22,7 @@ public class HandleReceivedNotes {
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
-        currentData = new Data[]{new Data("", "", "", "", "", "", "", "", "", true)};
-
+        currentData = new Data[]{new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true)};
 
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
@@ -36,9 +34,10 @@ public class HandleReceivedNotes {
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
-                            DataAnalyticPageKt.getDataList().add(currentData[0]);
+                            currentData[0].setDateAndTime(getDateAndTime());
+                           getDataList().add(currentData[0]);
                             handler.post(() -> setTexts(String.valueOf(dataCount)));
-                            currentData[0] = new Data("", "", "", "", "", "", "", "", "", true);
+                            currentData[0] = new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true);
                             counter = 1;
                             dataCount++;
                         }
