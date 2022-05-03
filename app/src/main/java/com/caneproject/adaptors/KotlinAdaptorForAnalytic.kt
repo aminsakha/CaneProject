@@ -1,6 +1,8 @@
 package com.caneproject.adaptors
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
@@ -19,10 +21,8 @@ import com.caneproject.utils.loadImageForRecView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.github.dhaval2404.colorpicker.model.ColorSwatch
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.*
 
 lateinit var myContext: Context
 lateinit var myDataLIst: List<Data>
@@ -62,7 +62,7 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
     @OptIn(DelicateCoroutinesApi::class)
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var firstPartTV: TextView = itemView.findViewById(R.id.firstPart)
-        private var button: TextView = itemView.findViewById(R.id.selectColorBTN)
+        private var button: FloatingActionButton = itemView.findViewById(R.id.selectColorBTN)
         var secondPartTV: TextView = itemView.findViewById(R.id.secondPart)
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
 
@@ -74,12 +74,13 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
                     .setColorShape(ColorShape.CIRCLE)
                     .setColors(arrayListOf("#FF0000", "#00FF00", "#0000FF"))
                     .setColorSwatch(ColorSwatch._300)
+                    .setTitle("choose the real color")
                     .setColorListener { _, colorHex ->
-                        GlobalScope.launch(Dispatchers.IO) {
+                        runBlocking {
                             db.dataDao()
                                 .updateColor(colorHex, myDataLIst[adapterPosition].uriString)
                         }
-
+                        itemView.background = ColorDrawable(Color.parseColor(colorHex))
                     }
                     .show()
             }
