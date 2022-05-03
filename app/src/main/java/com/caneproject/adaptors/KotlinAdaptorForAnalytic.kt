@@ -1,18 +1,14 @@
 package com.caneproject.adaptors
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.caneproject.R
 import com.caneproject.classes.db
@@ -42,6 +38,12 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
+            if (dataList[position].trueColor.isNotEmpty())
+                holder.fab.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor(dataList[position].trueColor))
+            else
+                holder.fab.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor("#FFFFE6"))
             holder.firstPartTV.text = dataList[position].toString()
             holder.secondPartTV.text =
                 dataList[position].toStringForSecondPart()
@@ -62,12 +64,12 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
     @OptIn(DelicateCoroutinesApi::class)
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var firstPartTV: TextView = itemView.findViewById(R.id.firstPart)
-        private var button: FloatingActionButton = itemView.findViewById(R.id.selectColorBTN)
+        var fab: FloatingActionButton = itemView.findViewById(R.id.selectColorBTN)
         var secondPartTV: TextView = itemView.findViewById(R.id.secondPart)
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
 
         init {
-            button.setOnClickListener {
+            fab.setOnClickListener {
                 MaterialColorPickerDialog
                     .Builder(myContext)
                     .setTitle("Pick Theme")
@@ -80,7 +82,8 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
                             db.dataDao()
                                 .updateColor(colorHex, myDataLIst[adapterPosition].uriString)
                         }
-                        itemView.background = ColorDrawable(Color.parseColor(colorHex))
+                        fab.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor(colorHex))
                     }
                     .show()
             }

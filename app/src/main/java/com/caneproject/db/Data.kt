@@ -24,7 +24,7 @@ data class Data(
         return "$White , $Red , $Green , $Blue "
     }
     fun toStringForSecondPart(): String {
-        return "$k , $ir , $led , $trueColor "
+        return "$k , $ir , $led , $resultColor "
     }
 
     fun setDataAttribute(counter: Int, attribute: String) {
