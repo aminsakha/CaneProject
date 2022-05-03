@@ -19,6 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
+        android:contentDescription="@string/AsaProject"
         android:src="@drawable/ic_baseline_delete_forever"
         app:layout_anchorGravity="bottom|right|end" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

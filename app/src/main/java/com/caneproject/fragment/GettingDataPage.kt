@@ -1,10 +1,8 @@
 package com.caneproject.fragment
 
-import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,23 +12,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
+import com.caneproject.classes.dataList
+import com.caneproject.classes.dateAndTime
+import com.caneproject.classes.db
+import com.caneproject.classes.uriList
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.MakeConnectionToModulo
 import com.caneproject.utils.changeFragment
 import com.caneproject.utils.toastShower
-import com.caneproject.classes.*
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DateFormat
@@ -63,21 +62,14 @@ class GettingDataPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
                 JalaliDateTime.Now().toString().substring(0, 11)
-
-
-        if (allPermissionsGranted()) {
-            startCamera()
-            if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
-            ) {
-                makeConnectionToModulo =
-                    MakeConnectionToModulo(myContext as Activity, myContext)
-                makeConnectionToModulo!!.execute()
-            }
-        } else {
-            ActivityCompat.requestPermissions(
-                myContext as Activity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-            )
+        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
+        ) {
+            makeConnectionToModulo =
+                MakeConnectionToModulo(myContext as Activity, myContext)
+            makeConnectionToModulo!!.execute()
         }
+        startCamera()
+
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         binding.endBTN.setOnClickListener {
@@ -184,40 +176,6 @@ class GettingDataPage : Fragment() {
             }
         )
         return uriResult
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                toastShower(myContext, "\"Permissions not granted by the user.\"")
-            }
-        }
-    }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            myContext, it
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
-            mutableListOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
     }
 }
 
