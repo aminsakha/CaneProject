@@ -36,7 +36,7 @@ public class HandleReceivedNotes {
                         if (counter > 8) {
                             currentData[0].setDateAndTime(getDateAndTime());
                             getDataList().add(currentData[0]);
-                            handler.post(() -> setTextBoxText(String.valueOf(dataCount)));
+                            handler.post(() -> setTextBoxText(String.valueOf(dataCount-1)));
                             currentData[0] = new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true, "");
                             counter = 1;
                             dataCount++;

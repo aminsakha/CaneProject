@@ -47,7 +47,6 @@ class InitPage : Fragment() {
 
         binding.ConnectionButton.setOnClickListener {
             gotoGettingDataPage()
-
         }
         binding.fileManagerBTN.setOnClickListener {
             changeFragment(binding.ConnectionButton, R.id.action_initPage_to_dataManaging)
