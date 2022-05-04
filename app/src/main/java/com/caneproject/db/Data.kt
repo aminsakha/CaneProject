@@ -1,9 +1,11 @@
-package com.caneproject.classes
+package com.caneproject.db
 
 import android.net.Uri
-import java.net.URI
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class Data(
+@Entity(tableName = "data_table")
+data class Data(
     var White: String,
     var Red: String,
     var Green: String,
@@ -12,8 +14,19 @@ class Data(
     var ir: String,
     var led: String,
     var resultColor: String,
+    var dateAndTime:String,
+    var uriString: String,
+    var isTrueColor: Boolean,
+    var trueColor: String
 ) {
-    var uri: Uri?=null
+    @PrimaryKey(autoGenerate = true) var id: Int? = null
+    override fun toString(): String {
+        return "$White , $Red , $Green , $Blue "
+    }
+    fun toStringForSecondPart(): String {
+        return "$k , $ir , $led , $resultColor "
+    }
+
     fun setDataAttribute(counter: Int, attribute: String) {
         when (counter) {
             1 -> White = attribute
@@ -25,13 +38,5 @@ class Data(
             7 -> led = attribute
             8 -> resultColor = attribute
         }
-    }
-
-    override fun toString(): String {
-        return "$White , $Red , $Green , $Blue "
-    }
-
-    fun toStringForSecondPart(): String {
-        return "$k , $ir , $led , $resultColor "
     }
 }

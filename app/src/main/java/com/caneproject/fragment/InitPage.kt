@@ -13,9 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.caneproject.R
+import com.caneproject.classes.db
 import com.caneproject.databinding.FragmentInitPageBinding
+import com.caneproject.db.DataDb
 import com.caneproject.utils.changeFragment
+import com.caneproject.utils.toastShower
 
 
 class InitPage : Fragment() {
@@ -35,42 +39,23 @@ class InitPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("onDestroyView", "onDestroyView: created")
-        val arr = listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
+        db = Room.databaseBuilder(
+            myContext.applicationContext,
+            DataDb::class.java,
+            "data_table"
+        ).build()
+
         binding.ConnectionButton.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                checkPermission(arr)
-            else
-                startConnection()
+            gotoGettingDataPage()
+        }
+        binding.fileManagerBTN.setOnClickListener {
+            changeFragment(binding.ConnectionButton, R.id.action_initPage_to_dataManaging)
         }
     }
 
-    private fun checkPermission(permissions: List<String>) {
-        val missingPermissions = permissions.filter { permission ->
-            ContextCompat.checkSelfPermission(
-                myContext,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        }
-        if (missingPermissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(myContext as Activity, permissions.toTypedArray(), 1)
-        } else
-            startConnection()
-    }
 
-    private fun startConnection() {
+    private fun gotoGettingDataPage() {
         changeFragment(binding.ConnectionButton, R.id.action_initPage_to_gettingDataPage)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.none { it != PackageManager.PERMISSION_GRANTED }) {
-            startConnection()
-        }
     }
 
     override fun onDestroyView() {

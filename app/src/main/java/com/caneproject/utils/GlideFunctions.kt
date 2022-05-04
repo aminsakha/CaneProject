@@ -13,7 +13,8 @@ import com.caneproject.activities.screenWidth
 
 
 fun loadImageForRecView(context: Context, uri: Uri?, imageView: ImageView) {
-    Glide.with(context).load(uri).placeholder(R.drawable.placeholder)
+    Glide.with(context).load(uri).placeholder(R.drawable.placeholder).override(200, 200)
+        .dontAnimate()
         .apply(RequestOptions.bitmapTransform(RoundedCorners(15))).override(
             screenWidth / 4,
             (screenHeight / 2 * 0.9).toInt()

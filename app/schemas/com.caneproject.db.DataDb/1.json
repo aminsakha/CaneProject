@@ -1,0 +1,106 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "2ec1865e506b81b4c77fe5c24700dbc2",
+    "entities": [
+      {
+        "tableName": "data_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`White` TEXT NOT NULL, `Red` TEXT NOT NULL, `Green` TEXT NOT NULL, `Blue` TEXT NOT NULL, `k` TEXT NOT NULL, `ir` TEXT NOT NULL, `led` TEXT NOT NULL, `resultColor` TEXT NOT NULL, `dateAndTime` TEXT NOT NULL, `uriString` TEXT NOT NULL, `isTrueColor` INTEGER NOT NULL, `trueColor` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "White",
+            "columnName": "White",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Red",
+            "columnName": "Red",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Green",
+            "columnName": "Green",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Blue",
+            "columnName": "Blue",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "k",
+            "columnName": "k",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ir",
+            "columnName": "ir",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "led",
+            "columnName": "led",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resultColor",
+            "columnName": "resultColor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateAndTime",
+            "columnName": "dateAndTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uriString",
+            "columnName": "uriString",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isTrueColor",
+            "columnName": "isTrueColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trueColor",
+            "columnName": "trueColor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2ec1865e506b81b4c77fe5c24700dbc2')"
+    ]
+  }
+}

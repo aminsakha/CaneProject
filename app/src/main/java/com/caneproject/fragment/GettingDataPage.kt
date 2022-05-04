@@ -19,12 +19,18 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
+import com.caneproject.classes.dataList
+import com.caneproject.classes.dateAndTime
+import com.caneproject.classes.db
+import com.caneproject.classes.uriList
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.MakeConnectionToModulo
 import com.caneproject.utils.changeFragment
 import com.caneproject.utils.toastShower
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -32,17 +38,14 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-var uriList = mutableListOf<Uri>()
 var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
 var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
-var dateAndTime = JalaliDateTime.Now().toString().substring(0, 11) + "\n" +
-        DateFormat.getDateTimeInstance().format(Date()).substring(12)
+
 
 class GettingDataPage : Fragment() {
-
     private lateinit var myContext: Context
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,23 +60,31 @@ class GettingDataPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)) {
+        dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
+                JalaliDateTime.Now().toString().substring(0, 11)
+        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
+        ) {
             makeConnectionToModulo =
                 MakeConnectionToModulo(myContext as Activity, myContext)
             makeConnectionToModulo!!.execute()
         }
+        startCamera()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-        startCamera()
 
         binding.endBTN.setOnClickListener {
             disconnect()
-            changeFragment(
-                binding.endBTN,
-                R.id.action_gettingDataPage_to_dataAnaliticsPage
-            )
+            lifecycleScope.launch {
+                setUris()
+                insertListToDB()
+                toastShower(myContext, "Data Successfully Saved")
+                changeFragment(
+                    binding.endBTN,
+                    R.id.action_gettingDataPage_to_initPage
+                )
+                dataList.clear()
+                uriList.clear()
+            }
         }
     }
 
@@ -94,24 +105,20 @@ class GettingDataPage : Fragment() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(myContext)
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
             // Preview
             val preview = Preview.Builder()
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.camera.surfaceProvider)
                 }
-
             imageCapture = ImageCapture.Builder()
                 .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
             try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
@@ -122,7 +129,6 @@ class GettingDataPage : Fragment() {
                 )
 
             } catch (exc: Exception) {
-                Log.e("capture", "Use case binding failed", exc)
             }
         }, ContextCompat.getMainExecutor(myContext))
     }
@@ -147,7 +153,6 @@ class GettingDataPage : Fragment() {
                     contentValues
                 )
                 .build()
-        Log.d("beginListenForData", "output")
         var uriResult: Uri? = null
 
         imageCapture.takePicture(
@@ -159,7 +164,6 @@ class GettingDataPage : Fragment() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    Log.d("beginListenForData", "onSAved")
                     val savedUri = Uri.fromFile(
                         File(
                             "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path}/CameraX-Image",
@@ -168,13 +172,11 @@ class GettingDataPage : Fragment() {
                     )
                     uriResult = savedUri
                     uriList.add(savedUri)
-                    toastShower(myContext, "got  ${uriList.size}")
                 }
             }
         )
         return uriResult
     }
-
 }
 
 fun takingPhoto(context: Context) {
@@ -182,7 +184,25 @@ fun takingPhoto(context: Context) {
     Log.d("beginListenForData", "into taking")
 }
 
-fun setTexts(string: String) {
+fun setTextBoxText(string: String) {
     "Data Number : $string".also { binding.countBox.text = it }
 }
 
+private suspend fun insertListToDB() {
+    try {
+        for (data in dataList) {
+            if (data.White.isNotEmpty())
+                db.dataDao().addData(data)
+        }
+    } catch (e: Exception) {
+    }
+}
+
+private fun setUris() {
+    try {
+        for (i in dataList.indices) {
+            dataList[i].uriString = uriList[i].toString()
+        }
+    } catch (e: IndexOutOfBoundsException) {
+    }
+}

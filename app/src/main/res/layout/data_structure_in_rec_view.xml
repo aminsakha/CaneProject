@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:padding="50dp">
+    android:padding="40dp"
+    android:textAlignment="viewStart">
 
     <ImageView
         android:id="@+id/imageView"
@@ -43,19 +44,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/selectColorBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="@color/black"
-        android:backgroundTintMode="screen"
-        android:entries="@array/colorList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/firstPart"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_color_lens" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

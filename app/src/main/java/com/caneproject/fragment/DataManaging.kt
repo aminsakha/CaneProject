@@ -9,21 +9,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.caneproject.adaptors.KotlinAdaptorForAnalytic
+import com.caneproject.adaptors.DataManagingAdaptor
 import com.caneproject.classes.db
-import com.caneproject.classes.selectedItemInRecView
-import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
+import com.caneproject.databinding.FragmentDataManagingBinding
+import com.caneproject.utils.toastShower
 import kotlinx.coroutines.launch
 
-class DataAnalyticPage : Fragment() {
-    private var _binding: FragmentDataAnaliticsPageBinding? = null
+class DataManaging : Fragment() {
+    private var adaptor: DataManagingAdaptor = DataManagingAdaptor(emptyList())
+    private var _binding: FragmentDataManagingBinding? = null
     private val binding get() = _binding!!
     private lateinit var myContext: Context
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDataAnaliticsPageBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentDataManagingBinding.inflate(layoutInflater, container, false)
         if (container != null)
             myContext = container.context
 
@@ -32,19 +33,28 @@ class DataAnalyticPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.DateBox.text = selectedItemInRecView
+        binding.deleteItemBTN.setOnClickListener {
+            lifecycleScope.launch {
+                db.dataDao().deleteEntire()
+                toastShower(myContext, "deleted all the data")
+                initRecyclerView()
+            }
+        }
         lifecycleScope.launch {
             initRecyclerView()
         }
     }
 
     private suspend fun initRecyclerView() {
-        val adapter =
-            KotlinAdaptorForAnalytic(db.dataDao().getRecordInThisDate(selectedItemInRecView), myContext)
-        binding.dataRecView.adapter = adapter
-        binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
+        adaptor = DataManagingAdaptor(getRecordDates())
+        binding.dataManagingRecView.adapter = adaptor
+        binding.dataManagingRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =
             DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
-        binding.dataRecView.addItemDecoration(dividerItemDecoration)
+        binding.dataManagingRecView.addItemDecoration(dividerItemDecoration)
+    }
+
+    private suspend fun getRecordDates(): MutableList<String> {
+        return db.dataDao().getDates()
     }
 }

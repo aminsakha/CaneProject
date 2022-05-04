@@ -15,13 +15,17 @@
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- for Android 12 and above, include the ones you really need -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:allowBackup="true"
