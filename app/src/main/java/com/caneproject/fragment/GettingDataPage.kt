@@ -22,10 +22,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
-import com.caneproject.classes.dataList
-import com.caneproject.classes.dateAndTime
-import com.caneproject.classes.db
-import com.caneproject.classes.uriList
+import com.caneproject.utils.dataList
+import com.caneproject.utils.dateAndTime
+import com.caneproject.utils.db
+import com.caneproject.utils.uriList
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.MakeConnectionToModulo
 import com.caneproject.utils.changeFragment

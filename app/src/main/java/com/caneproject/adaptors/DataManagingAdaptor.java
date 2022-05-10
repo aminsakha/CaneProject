@@ -1,6 +1,6 @@
 package com.caneproject.adaptors;
 
-import static com.caneproject.classes.GlobalVariablesKt.setSelectedItemInRecView;
+import static com.caneproject.utils.GlobalVariablesKt.setSelectedItemInRecView;
 import static com.caneproject.utils.UtilityFunctionsKt.changeFragment;
 
 import android.view.LayoutInflater;

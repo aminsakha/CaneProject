@@ -2,7 +2,6 @@ package com.caneproject.utils;
 
 import static com.caneproject.fragment.GettingDataPageKt.setTextBoxText;
 import static com.caneproject.utils.UtilityFunctionsKt.processOnString;
-import static com.caneproject.classes.GlobalVariablesKt.*;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -22,7 +21,7 @@ public class HandleReceivedNotes {
 
     public static void beginListenForData(BluetoothSocket socket, Context context) {
         final Handler handler = new Handler();
-        currentData = new Data[]{new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true, "")};
+        currentData = new Data[]{new Data("", "", "", "", "", "", "", "", com.caneproject.utils.GlobalVariablesKt.getDateAndTime(), "", true, "")};
         dataCount = 1;
         Thread thread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
@@ -34,10 +33,10 @@ public class HandleReceivedNotes {
                         String receivedString = new String(rawBytes, StandardCharsets.UTF_8);
                         Log.d("beginListenForData", "received: " + receivedString);
                         if (counter > 8) {
-                            currentData[0].setDateAndTime(getDateAndTime());
-                            getDataList().add(currentData[0]);
+                            currentData[0].setDateAndTime(com.caneproject.utils.GlobalVariablesKt.getDateAndTime());
+                            com.caneproject.utils.GlobalVariablesKt.getDataList().add(currentData[0]);
                             handler.post(() -> setTextBoxText(String.valueOf(dataCount-1)));
-                            currentData[0] = new Data("", "", "", "", "", "", "", "", getDateAndTime(), "", true, "");
+                            currentData[0] = new Data("", "", "", "", "", "", "", "", com.caneproject.utils.GlobalVariablesKt.getDateAndTime(), "", true, "");
                             counter = 1;
                             dataCount++;
                         }

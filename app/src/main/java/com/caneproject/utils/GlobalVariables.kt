@@ -1,4 +1,4 @@
-package com.caneproject.classes
+package com.caneproject.utils
 
 import android.net.Uri
 import androidx.room.Room
