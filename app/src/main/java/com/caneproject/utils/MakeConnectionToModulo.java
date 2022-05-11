@@ -56,7 +56,7 @@ public class MakeConnectionToModulo extends AsyncTask<Void, Void, Void> {
         try {
             if (socket == null || !isConnected) {
                 bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                String address = context.getString(R.string.Bluetooth_AddressNew);
+                String address = context.getString(R.string.Bluetooth_Address);
                 BluetoothDevice disposition = bluetoothAdapter.getRemoteDevice(address);
                 socket = disposition.createInsecureRfcommSocketToServiceRecord(myUUID);
                 BluetoothAdapter.getDefaultAdapter().cancelDiscovery();

@@ -1,6 +1,5 @@
 package com.caneproject.fragment
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
@@ -22,14 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
-import com.caneproject.utils.dataList
-import com.caneproject.utils.dateAndTime
-import com.caneproject.utils.db
-import com.caneproject.utils.uriList
 import com.caneproject.databinding.FragmentGettingDataPageBinding
-import com.caneproject.utils.MakeConnectionToModulo
-import com.caneproject.utils.changeFragment
-import com.caneproject.utils.toastShower
+import com.caneproject.utils.*
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.DateFormat
@@ -40,7 +33,6 @@ import java.util.concurrent.Executors
 
 var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
-var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
 
@@ -60,14 +52,8 @@ class GettingDataPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
-                JalaliDateTime.Now().toString().substring(0, 11)
-        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
-        ) {
-            makeConnectionToModulo =
-                MakeConnectionToModulo(myContext as Activity, myContext)
-            makeConnectionToModulo!!.execute()
-        }
+        dateAndTime = currentDateAndTime()
+
         startCamera()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -89,9 +75,9 @@ class GettingDataPage : Fragment() {
     }
 
     private fun disconnect(): Boolean {
-        if (makeConnectionToModulo?.socket != null) {
-            makeConnectionToModulo?.socket?.close()
-            makeConnectionToModulo = null
+        if (socket != null) {
+            socket?.close()
+            socket = null
             return true
         }
         return false

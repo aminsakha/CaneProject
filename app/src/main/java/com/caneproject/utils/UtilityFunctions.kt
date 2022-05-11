@@ -8,8 +8,11 @@ import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.db.Data
 import java.io.FileOutputStream
+import java.text.DateFormat
+import java.util.*
 
 
 var tmpArr = mutableListOf<String>()
@@ -69,3 +72,6 @@ fun getScreenWidth(): Int {
 fun getScreenHeight(): Int {
     return Resources.getSystem().displayMetrics.heightPixels
 }
+
+fun currentDateAndTime() = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
+        JalaliDateTime.Now().toString().substring(0, 11)
