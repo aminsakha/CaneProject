@@ -51,8 +51,9 @@ class InitPage : Fragment() {
             "data_table"
         ).build()
 
-        binding.ConnectionButton.setOnClickListener {
+        binding.startConnectionBTN.setOnClickListener {
             loadingDialog.startDialog()
+          //  if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     connectToModulo()
@@ -61,11 +62,13 @@ class InitPage : Fragment() {
                             if (continueConnection()) {
                                 loadingDialog.dismissDialog()
                                 changeFragment(
-                                    binding.ConnectionButton,
+                                    binding.startConnectionBTN,
                                     R.id.action_initPage_to_gettingDataPage
                                 )
-                            } else
+                            } else {
                                 loadingDialog.dismissDialog()
+                            }
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -75,8 +78,8 @@ class InitPage : Fragment() {
                 }
             }
         }
-        binding.fileManagerBTN.setOnClickListener {
-            changeFragment(binding.fileManagerBTN, R.id.action_initPage_to_dataManaging)
+        binding.libraryBTN.setOnClickListener {
+            changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)
         }
     }
 
