@@ -2,7 +2,6 @@ package com.caneproject.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class InitPage : Fragment() {
-     var bluetoothInstance: Bluetooth? = null
+    private var bluetoothInstance: Bluetooth? = null
     private var _binding: FragmentInitPageBinding? = null
     private val binding get() = _binding!!
     private lateinit var myContext: Context
@@ -39,6 +38,9 @@ class InitPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val loadingDialog = LoadingDialog(myContext as Activity)
         bluetoothInstance = Bluetooth(myContext)
+
+        checkConnectivity()
+
         db = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,
@@ -51,22 +53,31 @@ class InitPage : Fragment() {
             loadingDialog.startDialog()
             CoroutineScope(Dispatchers.IO).launch {
                 bluetoothInstance?.startConnection()
-                withContext(Dispatchers.Main) {
-                    try {
-                        loadingDialog.dismissDialog()
-                        changeFragment(
-                            binding.connectToDeviceBTN,
-                            R.id.action_initPage_to_gettingDataPage
-                        )
-                        bluetoothInstance?.ConnectedThread()?.start()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                if (socket!!.isConnected) {
+                    withContext(Dispatchers.Main) {
+                        try {
+                            loadingDialog.dismissDialog()
+                            changeFragment(
+                                binding.connectToDeviceBTN,
+                                R.id.action_initPage_to_gettingDataPage
+                            )
+                            bluetoothInstance?.ConnectedThread()?.start()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                }
+                } else
+                    loadingDialog.dismissDialog()
             }
         }
         binding.libraryBTN.setOnClickListener {
             changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)
+        }
+    }
+
+    private fun checkConnectivity() {
+        if (socket != null && socket!!.isConnected) {
+            bluetoothInstance!!.ConnectedThread().cancel()
         }
     }
 

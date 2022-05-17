@@ -57,9 +57,8 @@ class GettingDataPage : Fragment() {
         startCamera()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
+        simpleSnackBar(binding.endBTN, "Connected SuccessFully")
         binding.endBTN.setOnClickListener {
-            InitPage().bluetoothInstance?.cancel()
             lifecycleScope.launch {
                 setUris()
                 insertListToDB()

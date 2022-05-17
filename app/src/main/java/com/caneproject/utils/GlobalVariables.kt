@@ -2,6 +2,7 @@ package com.caneproject.utils
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.net.Uri
 import androidx.room.Room
 import com.caneproject.db.Data
@@ -15,3 +16,4 @@ var selectedItemInRecView=""
 var connectedDeviceAddress=""
 var bluetoothAdapter: BluetoothAdapter? = null
 var connectedDevice: BluetoothDevice?=null
+var socket: BluetoothSocket? = null
