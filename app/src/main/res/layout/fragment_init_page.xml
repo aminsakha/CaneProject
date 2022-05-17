@@ -7,11 +7,11 @@
     tools:context=".fragment.InitPage">
 
     <Button
-        android:id="@+id/startConnectionBTN"
+        android:id="@+id/chooseDeviceBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
-        android:text="Collect Data"
+        android:text="Choose Device"
         app:layout_constraintBottom_toTopOf="@+id/libraryBTN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -28,5 +28,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startConnectionBTN" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseDeviceBTN" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/connectToDeviceBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/black"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/chooseDeviceBTN"
+        app:layout_constraintStart_toStartOf="@+id/chooseDeviceBTN"
+        app:layout_constraintTop_toBottomOf="@+id/chooseDeviceBTN">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_bluetooth" />
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

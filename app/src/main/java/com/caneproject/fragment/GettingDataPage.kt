@@ -59,7 +59,7 @@ class GettingDataPage : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         binding.endBTN.setOnClickListener {
-            disconnect()
+            InitPage().bluetoothInstance?.cancel()
             lifecycleScope.launch {
                 setUris()
                 insertListToDB()
@@ -72,15 +72,6 @@ class GettingDataPage : Fragment() {
                 uriList.clear()
             }
         }
-    }
-
-    private fun disconnect(): Boolean {
-        if (socket != null) {
-            socket?.close()
-            socket = null
-            return true
-        }
-        return false
     }
 
     override fun onDestroyView() {

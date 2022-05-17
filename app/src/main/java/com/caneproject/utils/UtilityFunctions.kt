@@ -1,15 +1,19 @@
 package com.caneproject.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.db.Data
+import com.google.android.material.snackbar.Snackbar
 import java.io.FileOutputStream
 import java.text.DateFormat
 import java.util.*
@@ -71,6 +75,31 @@ fun getScreenWidth(): Int {
 
 fun getScreenHeight(): Int {
     return Resources.getSystem().displayMetrics.heightPixels
+}
+
+fun showSnackBar(view: View, alertText: String, actionText: String, actionMethod: () -> (Unit)) {
+    Snackbar.make(view, alertText, Snackbar.LENGTH_INDEFINITE)
+        .setAction(actionText) {
+            actionMethod()
+        }
+        .show()
+}
+
+@SuppressLint("MissingPermission")
+fun showListViewInDialog(title: String, itemList: Array<CharSequence>, context: Context) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle(title)
+    builder.setItems(
+        itemList
+    ) { _, item ->
+        connectedDeviceAddress = (itemList[item] as String).split(",")[1]
+        bluetoothAdapter?.bondedDevices?.forEach {
+            if (it.address == connectedDeviceAddress)
+                connectedDevice = it
+            Log.d("Connectionn", "showListViewInDialog: $connectedDevice")
+        }
+    }
+    builder.create().show()
 }
 
 fun currentDateAndTime() = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +

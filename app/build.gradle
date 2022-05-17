@@ -43,6 +43,7 @@ android {
     lint {
         checkReleaseBuilds false
     }
+    namespace 'com.caneproject'
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'

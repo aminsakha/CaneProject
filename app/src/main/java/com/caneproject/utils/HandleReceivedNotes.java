@@ -47,7 +47,6 @@ public class HandleReceivedNotes {
                             if (counter == 1 && status.endsWith("W"))
                                 handler.post(() -> GettingDataPageKt.takingPhoto(context));
 
-
                             currentData[0].setDataAttribute(counter, status);
                             counter++;
                         }
