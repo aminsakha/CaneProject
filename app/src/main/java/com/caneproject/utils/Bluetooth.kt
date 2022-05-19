@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.caneproject.R
-import com.caneproject.db.Data
 import com.caneproject.fragment.setTextBoxText
 import com.caneproject.fragment.takingPhoto
 import java.io.IOException
@@ -61,49 +60,46 @@ class Bluetooth(val context: Context) {
 
     }
 
-    inner class ConnectedThread : Thread() {
-        fun cancel() {
-            try {
-                socket?.close()
-            } catch (e: IOException) {
-            }
+    fun disconnect() {
+        try {
+            socket?.close()
+        } catch (e: IOException) {
         }
+    }
 
-        private var counter = 1
-        private val inputStream: InputStream = socket!!.inputStream
-        private var currentData = Data("", "", "", "", "", "", "", "", dateAndTime, "", true, "")
-        override fun run() {
-            while (true) {
-                try {
-                    val byteCount = inputStream.available()
-                    if (byteCount > 0) {
-                        val rawBytes = ByteArray(byteCount)
-                        inputStream.read(rawBytes)
-                        val receivedString = String(rawBytes, StandardCharsets.UTF_8)
-                        Log.d("Connection", receivedString)
+    fun receiveData() {
+        var counter = 1
+        val inputStream: InputStream = socket!!.inputStream
+        var currentData = initialData()
+        while (true) {
+            try {
+                val byteCount = inputStream.available()
+                if (byteCount > 0) {
+                    val rawBytes = ByteArray(byteCount)
+                    inputStream.read(rawBytes)
+                    val receivedString = String(rawBytes, StandardCharsets.UTF_8)
+                    Log.d("Connection", receivedString)
 
-                        if (counter > 8) {
-                            currentData.dateAndTime = dateAndTime
-                            dataList.add(currentData)
-                            setTextBoxText((dataList.size).toString())
-                            currentData =
-                                Data("", "", "", "", "", "", "", "", dateAndTime, "", true, "")
-                            counter = 1
-                        }
-                        val curStatus: List<String> = processOnString(receivedString)
-                        for (status in curStatus) {
-                            if (counter == 1 && !status.endsWith("W")) continue
-                            if (counter == 1 && status.endsWith("W"))
-                                takingPhoto(context)
-                            currentData.setDataAttribute(
-                                counter,
-                                status
-                            )
-                            counter++
-                        }
+                    if (counter > 8) {
+                        currentData.dateAndTime = dateAndTime
+                        dataList.add(currentData)
+                        setTextBoxText((dataList.size).toString())
+                        currentData = initialData()
+                        counter = 1
                     }
-                } catch (e: IOException) {
+                    val curStatus: List<String> = processOnString(receivedString)
+                    for (status in curStatus) {
+                        if (counter == 1 && !status.endsWith("W")) continue
+                        if (counter == 1 && status.endsWith("W"))
+                            takingPhoto(context)
+                        currentData.setDataAttribute(
+                            counter,
+                            status
+                        )
+                        counter++
+                    }
                 }
+            } catch (e: IOException) {
             }
         }
     }

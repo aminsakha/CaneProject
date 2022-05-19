@@ -1,9 +1,7 @@
 package com.caneproject.utils
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.view.View
@@ -21,7 +19,6 @@ import com.caneproject.activities.screenHeight
 import com.caneproject.activities.screenWidth
 import com.caneproject.db.Data
 import com.google.android.material.snackbar.Snackbar
-import java.io.FileOutputStream
 import java.text.DateFormat
 import java.util.*
 
@@ -29,32 +26,6 @@ import java.util.*
 var tmpArr = mutableListOf<String>()
 fun toastShower(context: Context?, message: String?) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-}
-
-fun writeToFile(context: Context?, uri: Uri, content: String) {
-    val parcelFileDescriptor =
-        context?.contentResolver?.openFileDescriptor(uri, "w")
-    val fileOutputStream = FileOutputStream(parcelFileDescriptor?.fileDescriptor)
-    fileOutputStream.write(content.toByteArray())
-    fileOutputStream.close()
-    parcelFileDescriptor?.close()
-}
-
-fun saveToFile(
-    context: Context?,
-    list: MutableList<Data>,
-    requestCode: Int,
-    resultCode: Int,
-    data: Intent?
-) {
-    val stringBuilder = StringBuilder()
-    list.forEach {
-        stringBuilder.append("$it\n")
-    }
-    if (resultCode == Activity.RESULT_OK && requestCode == 40 && data != null) {
-        writeToFile(context, data.data!!, stringBuilder.toString())
-        toastShower(context, "file saved successfully")
-    }
 }
 
 fun processOnString(string: String): MutableList<String> {
@@ -110,4 +81,7 @@ fun loadImageForRecView(context: Context, uri: Uri?, imageView: ImageView) {
             screenWidth / 4,
             (screenHeight / 2 * 0.9).toInt()
         ).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(imageView)
+}
+fun initialData(): Data {
+    return Data("", "", "", "", "", "", "", "", dateAndTime, "", true, "")
 }

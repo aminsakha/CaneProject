@@ -19,13 +19,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.*
 import kotlinx.coroutines.launch
 import java.io.File
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService

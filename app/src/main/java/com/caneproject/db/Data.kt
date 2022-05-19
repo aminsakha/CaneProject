@@ -1,6 +1,5 @@
 package com.caneproject.db
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,15 +13,18 @@ data class Data(
     var ir: String,
     var led: String,
     var resultColor: String,
-    var dateAndTime:String,
+    var dateAndTime: String,
     var uriString: String,
     var isTrueColor: Boolean,
     var trueColor: String
 ) {
-    @PrimaryKey(autoGenerate = true) var id: Int? = null
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
     override fun toString(): String {
         return "$White , $Red , $Green , $Blue "
     }
+
     fun toStringForSecondPart(): String {
         return "$k , $ir , $led , $resultColor "
     }

@@ -60,11 +60,11 @@ class InitPage : Fragment() {
                                 binding.connectToDeviceBTN,
                                 R.id.action_initPage_to_gettingDataPage
                             )
-                            bluetoothInstance?.ConnectedThread()?.start()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     }
+                    bluetoothInstance?.receiveData()
                 } else
                     loadingDialog.dismissDialog()
             }
@@ -76,7 +76,7 @@ class InitPage : Fragment() {
 
     private fun checkConnectivity() {
         if (socket != null && socket!!.isConnected) {
-            bluetoothInstance!!.ConnectedThread().cancel()
+            bluetoothInstance!!.disconnect()
         }
     }
 
