@@ -13,7 +13,6 @@ var dateAndTime=""
 var dataList = mutableListOf<Data>()
  lateinit var db: DataDb
 var selectedItemInRecView=""
-var connectedDeviceAddress=""
 var bluetoothAdapter: BluetoothAdapter? = null
 var connectedDevice: BluetoothDevice?=null
 var socket: BluetoothSocket? = null

@@ -33,7 +33,7 @@ class Bluetooth(val context: Context) {
             for (i in pairedDevices!!.indices) {
                 val deviceName = pairedDevices.elementAt(i).name
                 val deviceHardwareAddress = pairedDevices.elementAt(i).address
-                pairedDevicesContent += "$deviceName,$deviceHardwareAddress"
+                pairedDevicesContent += "$deviceName :\n$deviceHardwareAddress\n"
             }
             showListViewInDialog("Connect To Which One ?", pairedDevicesContent, context)
         }

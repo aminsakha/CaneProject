@@ -1,6 +1,5 @@
 package com.caneproject.fragment
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -80,8 +79,6 @@ class InitPage : Fragment() {
             bluetoothInstance!!.ConnectedThread().cancel()
         }
     }
-
-    @SuppressLint("MissingPermission")
 
     override fun onDestroyView() {
         super.onDestroyView()

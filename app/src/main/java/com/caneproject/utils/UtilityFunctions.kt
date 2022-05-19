@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -85,19 +84,6 @@ fun getScreenHeight(): Int {
     return Resources.getSystem().displayMetrics.heightPixels
 }
 
-fun snackBarWithAction(
-    view: View,
-    alertText: String,
-    actionText: String,
-    actionMethod: () -> (Unit)
-) {
-    Snackbar.make(view, alertText, Snackbar.LENGTH_INDEFINITE)
-        .setAction(actionText) {
-            actionMethod()
-        }
-        .show()
-}
-
 fun simpleSnackBar(view: View, alertText: String) {
     Snackbar.make(view, alertText, Snackbar.LENGTH_SHORT).show()
 }
@@ -109,17 +95,14 @@ fun showListViewInDialog(title: String, itemList: Array<CharSequence>, context: 
     builder.setItems(
         itemList
     ) { _, item ->
-        connectedDeviceAddress = (itemList[item] as String).split(",")[1]
-        bluetoothAdapter?.bondedDevices?.forEach {
-            if (it.address == connectedDeviceAddress)
-                connectedDevice = it
-        }
+        connectedDevice = bluetoothAdapter?.bondedDevices?.elementAt(item)
     }
     builder.create().show()
 }
 
 fun currentDateAndTime() = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
         JalaliDateTime.Now().toString().substring(0, 11)
+
 fun loadImageForRecView(context: Context, uri: Uri?, imageView: ImageView) {
     Glide.with(context).load(uri).placeholder(R.drawable.placeholder).override(200, 200)
         .dontAnimate()
