@@ -1,6 +1,5 @@
 package com.caneproject.fragment
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
@@ -20,19 +19,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.caneproject.R
-import com.caneproject.classes.dataList
-import com.caneproject.classes.dateAndTime
-import com.caneproject.classes.db
-import com.caneproject.classes.uriList
 import com.caneproject.databinding.FragmentGettingDataPageBinding
-import com.caneproject.utils.MakeConnectionToModulo
-import com.caneproject.utils.changeFragment
-import com.caneproject.utils.toastShower
+import com.caneproject.utils.*
 import kotlinx.coroutines.launch
 import java.io.File
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -40,7 +31,6 @@ import java.util.concurrent.Executors
 
 var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
-var makeConnectionToModulo: MakeConnectionToModulo? = null
 var _binding: FragmentGettingDataPageBinding? = null
 val binding get() = _binding!!
 
@@ -60,20 +50,13 @@ class GettingDataPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dateAndTime = DateFormat.getDateTimeInstance().format(Date()).substring(12) + " , " +
-                JalaliDateTime.Now().toString().substring(0, 11)
-        if (makeConnectionToModulo?.socket == null || (makeConnectionToModulo?.isBluetoothOn == false)
-        ) {
-            makeConnectionToModulo =
-                MakeConnectionToModulo(myContext as Activity, myContext)
-            makeConnectionToModulo!!.execute()
-        }
+        dateAndTime = currentDateAndTime()
+
         startCamera()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
+        simpleSnackBar(binding.endBTN, "Connected SuccessFully")
         binding.endBTN.setOnClickListener {
-            disconnect()
             lifecycleScope.launch {
                 setUris()
                 insertListToDB()
@@ -86,15 +69,6 @@ class GettingDataPage : Fragment() {
                 uriList.clear()
             }
         }
-    }
-
-    private fun disconnect(): Boolean {
-        if (makeConnectionToModulo?.socket != null) {
-            makeConnectionToModulo?.socket?.close()
-            makeConnectionToModulo = null
-            return true
-        }
-        return false
     }
 
     override fun onDestroyView() {

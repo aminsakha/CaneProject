@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.DataManagingAdaptor
-import com.caneproject.classes.db
+import com.caneproject.utils.db
 import com.caneproject.databinding.FragmentDataManagingBinding
 import com.caneproject.utils.toastShower
 import kotlinx.coroutines.launch

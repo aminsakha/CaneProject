@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.KotlinAdaptorForAnalytic
-import com.caneproject.classes.db
-import com.caneproject.classes.selectedItemInRecView
+import com.caneproject.utils.db
+import com.caneproject.utils.selectedItemInRecView
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import kotlinx.coroutines.launch
 

@@ -1,28 +1,24 @@
 package com.caneproject.fragment
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.caneproject.R
-import com.caneproject.classes.db
 import com.caneproject.databinding.FragmentInitPageBinding
 import com.caneproject.db.DataDb
-import com.caneproject.utils.changeFragment
-import com.caneproject.utils.toastShower
-
+import com.caneproject.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class InitPage : Fragment() {
+    private var bluetoothInstance: Bluetooth? = null
     private var _binding: FragmentInitPageBinding? = null
     private val binding get() = _binding!!
     private lateinit var myContext: Context
@@ -39,23 +35,49 @@ class InitPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val loadingDialog = LoadingDialog(myContext as Activity)
+        bluetoothInstance = Bluetooth(myContext)
+
+        checkConnectivity()
+
         db = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,
             "data_table"
         ).build()
-
-        binding.ConnectionButton.setOnClickListener {
-            gotoGettingDataPage()
+        binding.chooseDeviceBTN.setOnClickListener {
+            bluetoothInstance?.chooseDevice()
         }
-        binding.fileManagerBTN.setOnClickListener {
-            changeFragment(binding.ConnectionButton, R.id.action_initPage_to_dataManaging)
+        binding.connectToDeviceBTN.setOnClickListener {
+            loadingDialog.startDialog()
+            CoroutineScope(Dispatchers.IO).launch {
+                bluetoothInstance?.startConnection()
+                if (socket!!.isConnected) {
+                    withContext(Dispatchers.Main) {
+                        try {
+                            loadingDialog.dismissDialog()
+                            changeFragment(
+                                binding.connectToDeviceBTN,
+                                R.id.action_initPage_to_gettingDataPage
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    bluetoothInstance?.receiveData()
+                } else
+                    loadingDialog.dismissDialog()
+            }
+        }
+        binding.libraryBTN.setOnClickListener {
+            changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)
         }
     }
 
-
-    private fun gotoGettingDataPage() {
-        changeFragment(binding.ConnectionButton, R.id.action_initPage_to_gettingDataPage)
+    private fun checkConnectivity() {
+        if (socket != null && socket!!.isConnected) {
+            bluetoothInstance!!.disconnect()
+        }
     }
 
     override fun onDestroyView() {

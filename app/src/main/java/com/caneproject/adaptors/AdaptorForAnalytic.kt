@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.caneproject.R
-import com.caneproject.classes.db
+import com.caneproject.utils.db
 import com.caneproject.db.Data
 import com.caneproject.utils.loadImageForRecView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
@@ -47,6 +47,8 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
             holder.firstPartTV.text = dataList[position].toString()
             holder.secondPartTV.text =
                 dataList[position].toStringForSecondPart()
+            val textContent = position + 1
+            holder.countTextBox.text = textContent.toString()
             loadImageForRecView(
                 context,
                 Uri.parse(dataList[position].uriString),
@@ -64,6 +66,7 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
     @OptIn(DelicateCoroutinesApi::class)
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var firstPartTV: TextView = itemView.findViewById(R.id.firstPart)
+        var countTextBox: TextView = itemView.findViewById(R.id.countTXTbox)
         var fab: FloatingActionButton = itemView.findViewById(R.id.selectColorBTN)
         var secondPartTV: TextView = itemView.findViewById(R.id.secondPart)
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -74,7 +77,7 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
                     .Builder(myContext)
                     .setTitle("Pick Theme")
                     .setColorShape(ColorShape.CIRCLE)
-                    .setColors(arrayListOf("#FF0000", "#00FF00", "#0000FF"))
+                    .setColors(arrayListOf("#FF0000", "#00FF00", "#0000FF", "#d0d0d9"))
                     .setColorSwatch(ColorSwatch._300)
                     .setTitle("choose the real color")
                     .setColorListener { _, colorHex ->
