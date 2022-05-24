@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.caneproject.R
 import com.caneproject.activities.screenHeight
 import com.caneproject.activities.screenWidth
+import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.db.Data
 import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat
