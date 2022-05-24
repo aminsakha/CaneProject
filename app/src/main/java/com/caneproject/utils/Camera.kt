@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.TextView
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -16,20 +17,31 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import java.io.File
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class Camera(private var myContext: Context, private var camera: PreviewView) {
+class Camera(
+    myContext: Context,
+    private var camera: PreviewView,
+    textBox: TextView
+) {
+    private var weakReferenceContext: WeakReference<Context>? = null
+    private var weakReferenceTextBox: WeakReference<TextView>? = null
+
+    init {
+        weakReferenceContext = WeakReference(myContext)
+        weakReferenceTextBox= WeakReference(textBox)
+    }
+
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(myContext)
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(weakReferenceContext?.get()!!)
         cameraProviderFuture.addListener({
-            // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            // Preview
             val preview = Preview.Builder()
                 .build()
                 .also {
@@ -38,20 +50,17 @@ class Camera(private var myContext: Context, private var camera: PreviewView) {
             imageCapture = ImageCapture.Builder()
                 .build()
 
-            // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             try {
-                // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
 
-                // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    myContext as LifecycleOwner, cameraSelector, preview, imageCapture
+                    weakReferenceContext?.get() as LifecycleOwner, cameraSelector, preview, imageCapture
                 )
 
             } catch (exc: Exception) {
             }
-        }, ContextCompat.getMainExecutor(myContext))
+        }, weakReferenceContext!!.get()?.let { ContextCompat.getMainExecutor(it) })
     }
 
     fun takePhoto(myContext: Context): Uri? {
@@ -82,7 +91,6 @@ class Camera(private var myContext: Context, private var camera: PreviewView) {
             ContextCompat.getMainExecutor(myContext),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e("capture", "Photo capture failed: ${exc.message}", exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -108,5 +116,9 @@ class Camera(private var myContext: Context, private var camera: PreviewView) {
 
     fun turnOffCamera() {
         cameraExecutor.shutdown()
+    }
+
+    fun setTextBoxText(string: String) {
+        "Data Number : $string".also { weakReferenceTextBox?.get()?.text = it }
     }
 }

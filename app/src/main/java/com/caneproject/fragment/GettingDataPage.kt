@@ -2,7 +2,6 @@ package com.caneproject.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import com.caneproject.R
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-var myCamera: Camera? = null
-var _binding: FragmentGettingDataPageBinding? = null
-val binding get() = _binding!!
+var cameraInstance: Camera? = null
 
 class GettingDataPage : Fragment() {
-
-
+    private var _binding: FragmentGettingDataPageBinding? = null
+    private val binding get() = _binding!!
     private lateinit var myContext: Context
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +33,8 @@ class GettingDataPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dateAndTime = currentDateAndTime()
 
-        myCamera = Camera(myContext, binding.camera)
-        myCamera?.showCamera()
+        cameraInstance = Camera(myContext, binding.camera, binding.countBox)
+        cameraInstance?.showCamera()
 
         simpleSnackBar(binding.endBTN, "Connected SuccessFully")
         binding.endBTN.setOnClickListener {
@@ -59,14 +54,10 @@ class GettingDataPage : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        myCamera?.turnOffCamera()
+        cameraInstance?.turnOffCamera()
         _binding = null
     }
 
-
-    fun setTextBoxText(string: String) {
-        "Data Number : $string".also { binding.countBox.text = it }
-    }
 
     private suspend fun insertListToDB() {
         try {
