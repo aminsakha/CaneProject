@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.caneproject.R
-import com.caneproject.fragment.GettingDataPage
 import com.caneproject.fragment.cameraInstance
 import java.io.IOException
 import java.io.InputStream
