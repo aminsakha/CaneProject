@@ -1,18 +1,10 @@
 package com.caneproject.db
 
-data class User(val userName: String, val passWord: CharArray) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-        other as User
-
-        if (!passWord.contentEquals(other.passWord)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return passWord.contentHashCode()
-    }
+@Entity(tableName = "user_table")
+data class User(val userName: String, val passWord: String) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
 }
