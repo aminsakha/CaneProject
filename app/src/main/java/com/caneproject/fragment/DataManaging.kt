@@ -52,6 +52,7 @@ class DataManaging : Fragment() {
         val dividerItemDecoration =
             DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
         binding.dataManagingRecView.addItemDecoration(dividerItemDecoration)
+
     }
 
     private suspend fun getRecordDates(): MutableList<String> {

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/drawable/ic_baseline_bluetooth.xml" value="0.2165" />
+        <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/drawable/ic_baseline_delete_forever.xml" value="0.254" />
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/drawable/ic_baseline_dns.xml" value="0.2165" />
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/drawable/ic_baseline_done.xml" value="0.2165" />
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/layout/activity_hard_ware_connection.xml" value="0.23333333333333334" />
@@ -20,6 +21,8 @@
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/layout/listitem.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/layout/show_data_structure.xml" value="0.2484375" />
         <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/layout/tmp.xml" value="0.2484375" />
+        <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/layout/tool_bar.xml" value="0.2484375" />
+        <entry key="..\:/Users/amins/StudioProjects/CaneProject/app/src/main/res/menu/selected_menu.xml" value="0.2484375" />
       </map>
     </option>
   </component>
