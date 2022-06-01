@@ -10,9 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.DataManagingAdaptor
-import com.caneproject.utils.db
 import com.caneproject.databinding.FragmentDataManagingBinding
-import com.caneproject.utils.toastShower
+import com.caneproject.utils.*
 import kotlinx.coroutines.launch
 
 class DataManaging : Fragment() {
@@ -35,9 +34,12 @@ class DataManaging : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.deleteItemBTN.setOnClickListener {
             lifecycleScope.launch {
-                db.dataDao().deleteEntire()
-                toastShower(myContext, "deleted all the data")
+                for (date in deletedItemsDate) {
+                    db.dataDao().deleteData(date)
+                }
+                simpleSnackBar(binding.dataManagingRecView, "Deleted Successfully")
                 initRecyclerView()
+                selectMultipleRow = false
             }
         }
         lifecycleScope.launch {

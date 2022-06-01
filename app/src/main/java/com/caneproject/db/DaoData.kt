@@ -21,6 +21,8 @@ interface DaoData {
 
     @Query("DELETE FROM data_table")
     suspend fun deleteEntire()
+    @Query("DELETE FROM data_table WHERE dateAndTime =:date ")
+    suspend fun deleteData(date: String)
 
     @Query("SELECT DISTINCT dateAndTime FROM data_table")
     suspend fun getDates(): MutableList<String>

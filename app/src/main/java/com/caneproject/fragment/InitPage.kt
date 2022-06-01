@@ -49,25 +49,30 @@ class InitPage : Fragment() {
             bluetoothInstance?.chooseDevice()
         }
         binding.connectToDeviceBTN.setOnClickListener {
-            loadingDialog.startDialog()
-            CoroutineScope(Dispatchers.IO).launch {
-                bluetoothInstance?.startConnection()
-                if (socket!!.isConnected) {
-                    withContext(Dispatchers.Main) {
-                        try {
-                            loadingDialog.dismissDialog()
-                            changeFragment(
-                                binding.connectToDeviceBTN,
-                                R.id.action_initPage_to_gettingDataPage
-                            )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+            if (connectedDevice == null) {
+                toastShower(myContext, "please first select a device")
+            } else {
+                loadingDialog.startDialog()
+                CoroutineScope(Dispatchers.IO).launch {
+                    bluetoothInstance?.startConnection()
+                    if (socket!!.isConnected) {
+                        withContext(Dispatchers.Main) {
+                            try {
+                                loadingDialog.dismissDialog()
+                                changeFragment(
+                                    binding.connectToDeviceBTN,
+                                    R.id.action_initPage_to_gettingDataPage
+                                )
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
-                    }
-                    bluetoothInstance?.receiveData()
-                } else
-                    loadingDialog.dismissDialog()
+                        bluetoothInstance?.receiveData()
+                    } else
+                        loadingDialog.dismissDialog()
+                }
             }
+
         }
         binding.libraryBTN.setOnClickListener {
             changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)
