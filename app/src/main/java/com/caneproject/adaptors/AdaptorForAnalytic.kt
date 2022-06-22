@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,7 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
                 Uri.parse(dataList[position].uriString),
                 holder.imageView
             )
+            Log.d("image", "${Uri.parse(dataList[position].uriString)}")
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
         }
@@ -63,7 +65,6 @@ class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Co
         return dataList.size
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var firstPartTV: TextView = itemView.findViewById(R.id.firstPart)
         var countTextBox: TextView = itemView.findViewById(R.id.countTXTbox)

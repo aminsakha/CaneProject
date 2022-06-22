@@ -2,7 +2,10 @@ package com.caneproject.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +15,11 @@ import com.caneproject.R
 import com.caneproject.databinding.FragmentInitPageBinding
 import com.caneproject.db.DataDb
 import com.caneproject.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.firebase.FirebaseApp
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.*
+import java.io.File
 
 class InitPage : Fragment() {
     private var bluetoothInstance: Bluetooth? = null
@@ -37,9 +41,11 @@ class InitPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val loadingDialog = LoadingDialog(myContext as Activity)
         bluetoothInstance = Bluetooth(myContext)
-
         checkConnectivity()
-
+        Log.d(
+            "onViewCreated",
+            "onViewCreated: ${Environment.getExternalStorageDirectory().getAbsolutePath()}"
+        )
         db = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,

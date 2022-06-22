@@ -1,13 +1,17 @@
 package com.caneproject.utils
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.Navigation
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.bumptech.glide.Glide
@@ -20,8 +24,10 @@ import com.caneproject.activities.screenWidth
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.db.Data
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 var tmpArr = mutableListOf<String>()
@@ -83,6 +89,16 @@ fun loadImageForRecView(context: Context, uri: Uri?, imageView: ImageView) {
             (screenHeight / 2 * 0.9).toInt()
         ).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(imageView)
 }
+
 fun initialData(): Data {
     return Data("", "", "", "", "", "", "", "", dateAndTime, "", true, "")
+}
+
+fun shareImages(listOfUris: ArrayList<Uri>, context: Context) {
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND_MULTIPLE
+        putParcelableArrayListExtra(Intent.EXTRA_STREAM, listOfUris)
+        type = "image/*"
+    }
+    startActivity(context, Intent.createChooser(shareIntent, null), null)
 }

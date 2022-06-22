@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "557763276244",
+    "project_id": "asaproject-4b171",
+    "storage_bucket": "asaproject-4b171.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557763276244:android:c0073109c3c259f0557a41",
+        "android_client_info": {
+          "package_name": "com.caneproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557763276244-h764abuqek6r8fcqd7oleirj8nr5kj81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq4lRYmopFFHb65F8FonuiNbrJPz7EksA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557763276244-h764abuqek6r8fcqd7oleirj8nr5kj81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
