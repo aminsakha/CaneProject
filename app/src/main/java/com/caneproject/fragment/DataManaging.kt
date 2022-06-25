@@ -76,6 +76,7 @@ class DataManaging : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == READ_CODE && data != null) {
             val strings = readFile(data.data!!, myContext)
+            uriOfTextFile = data.data!!
             dataListFromFile = jsonFileToObjectList(strings.joinToString(""))
             changeFragment(binding.addFileBTN, R.id.action_dataManaging_to_dataAnaliticsPage)
         }

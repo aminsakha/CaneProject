@@ -11,6 +11,7 @@ var uriList = mutableListOf<Uri>()
 var dateAndTime = ""
 var dataListFromModulo = mutableListOf<Data>()
 var dataListFromFile = mutableListOf<Data>()
+var uriOfTextFile:Uri?=null
 lateinit var db: DataDb
 var selectedItemInRecView = ""
 var deletedItemsDate = mutableListOf<String>()

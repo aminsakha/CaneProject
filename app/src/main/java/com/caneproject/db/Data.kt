@@ -18,7 +18,6 @@ data class Data(
     var isTrueColor: Boolean,
     var trueColor: String
 ) {
-
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
     override fun toString(): String {

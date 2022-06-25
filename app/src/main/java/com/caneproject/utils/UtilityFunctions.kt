@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.navigation.Navigation
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.bumptech.glide.Glide
@@ -101,11 +102,10 @@ fun initialData(): Data {
 }
 
 fun shareImages(listOfUris: ArrayList<Uri>, context: Context) {
-
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND_MULTIPLE
         putParcelableArrayListExtra(Intent.EXTRA_STREAM, listOfUris)
-        type = "image/*"
+        type = "*/*"
     }
     startActivity(context, Intent.createChooser(shareIntent, null), null)
 }
@@ -128,4 +128,14 @@ fun jsonFileToObjectList(jsonString: String): MutableList<Data> {
     val arrayTutorialType = object : TypeToken<MutableList<Data>>() {}.type
     val gson = Gson()
     return gson.fromJson(jsonString, arrayTutorialType)
+}
+
+fun getUriForSharing(uri: String, context: Context): Uri {
+    return Uri.parse(uri).path?.let { it1 -> File(it1) }?.let { it2 ->
+        FileProvider.getUriForFile(
+            context,
+            context.applicationContext.packageName.toString() + ".provider",
+            it2
+        )
+    }!!
 }

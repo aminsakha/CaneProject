@@ -1,15 +1,12 @@
 package com.caneproject.fragment
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,13 +15,9 @@ import com.caneproject.adaptors.KotlinAdaptorForAnalytic
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import com.caneproject.db.Data
 import com.caneproject.utils.*
-import com.microsoft.appcenter.AppCenter
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.utils.AppCenterLog
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-
 
 class DataAnalyticPage : Fragment() {
     private var _binding: FragmentDataAnaliticsPageBinding? = null
@@ -51,20 +44,12 @@ class DataAnalyticPage : Fragment() {
         binding.sendBTN.setOnClickListener {
             val uriList = ArrayList<Uri>()
             for (data in tmpList) {
-                val photoURI =
-                    Uri.parse(data.uriString).path?.let { it1 -> File(it1) }?.let { it2 ->
-                        FileProvider.getUriForFile(
-                            myContext,
-                            myContext.applicationContext.packageName.toString() + ".provider",
-                            it2
-                        )
-                    }
-                if (photoURI != null) {
-                    uriList.add(photoURI)
-                }
+                val photoURI = getUriForSharing(data.uriString, myContext)
+                uriList.add(photoURI)
             }
-            writeToFile(dataListIntoJson(tmpList))
-            //shareImages(uriList, myContext)
+            uriOfTextFile = writeToFile(dataListIntoJson(tmpList), tmpList[0].dateAndTime)
+            uriList.add(getUriForSharing(uriOfTextFile.toString(), myContext))
+            shareImages(uriList, myContext)
         }
     }
 
@@ -80,6 +65,7 @@ class DataAnalyticPage : Fragment() {
                 myContext
             )
         }
+        tmpList = adapter.dataList as MutableList<Data>
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =
@@ -88,13 +74,17 @@ class DataAnalyticPage : Fragment() {
         selectedItemInRecView = ""
     }
 
-    private fun writeToFile(content: String) {
-        val path =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path
-        val writer = FileOutputStream(File(path, "textTest1.txt"))
-        writer.write(content.toByteArray())
-        writer.close()
+    private fun writeToFile(content: String, fileName: String): Uri? {
+        val tmp = fileName.split(",")
+        val validFileName =
+            "${tmp[0]}${tmp[1]}".replace("\\s".toRegex(), "").replace("/", ":").replace(":", ",")
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path
+        FileOutputStream(File(path, "$validFileName.txt")).apply {
+            write(content.toByteArray())
+            close()
+        }
         toastShower(myContext, "got it")
+        return Uri.fromFile(File(path, "$validFileName.txt"))
     }
 
     override fun onDestroyView() {

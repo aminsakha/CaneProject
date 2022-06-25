@@ -24,7 +24,7 @@ import kotlinx.coroutines.*
 lateinit var myContext: Context
 lateinit var myDataLIst: List<Data>
 
-class KotlinAdaptorForAnalytic(private val dataList: List<Data>, val context: Context) :
+class KotlinAdaptorForAnalytic(val dataList: List<Data>, val context: Context) :
     RecyclerView.Adapter<KotlinAdaptorForAnalytic.ViewHolder>() {
     init {
         myContext = context
