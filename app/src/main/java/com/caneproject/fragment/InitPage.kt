@@ -42,10 +42,6 @@ class InitPage : Fragment() {
         val loadingDialog = LoadingDialog(myContext as Activity)
         bluetoothInstance = Bluetooth(myContext)
         checkConnectivity()
-        Log.d(
-            "onViewCreated",
-            "onViewCreated: ${Environment.getExternalStorageDirectory().getAbsolutePath()}"
-        )
         db = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,

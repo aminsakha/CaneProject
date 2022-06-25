@@ -23,4 +23,17 @@
         android:contentDescription="@string/AsaProject"
         android:src="@drawable/ic_baseline_delete_forever"
         app:layout_anchorGravity="bottom|right|end" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFileBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/purple_500"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|start|start"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/AsaProject"
+        android:src="@drawable/ic_baseline_add"
+        app:layout_anchorGravity="bottom|start" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,8 +1,11 @@
 package com.caneproject.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.KotlinAdaptorForAnalytic
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import com.caneproject.db.Data
-import com.caneproject.utils.db
-import com.caneproject.utils.selectedItemInRecView
-import com.caneproject.utils.shareImages
+import com.caneproject.utils.*
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.utils.AppCenterLog
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileOutputStream
 
 
 class DataAnalyticPage : Fragment() {
@@ -58,21 +63,42 @@ class DataAnalyticPage : Fragment() {
                     uriList.add(photoURI)
                 }
             }
-            shareImages(uriList, myContext)
+            writeToFile(dataListIntoJson(tmpList))
+            //shareImages(uriList, myContext)
         }
     }
 
     private suspend fun initRecyclerView() {
-        val adapter =
+        val adapter: KotlinAdaptorForAnalytic = if (selectedItemInRecView.isNotEmpty()) {
             KotlinAdaptorForAnalytic(
                 db.dataDao().getRecordInThisDate(selectedItemInRecView),
                 myContext
             )
-        tmpList = db.dataDao().getRecordInThisDate(selectedItemInRecView)
+        } else {
+            KotlinAdaptorForAnalytic(
+                dataListFromFile,
+                myContext
+            )
+        }
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =
             DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
         binding.dataRecView.addItemDecoration(dividerItemDecoration)
+        selectedItemInRecView = ""
+    }
+
+    private fun writeToFile(content: String) {
+        val path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path
+        val writer = FileOutputStream(File(path, "textTest1.txt"))
+        writer.write(content.toByteArray())
+        writer.close()
+        toastShower(myContext, "got it")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

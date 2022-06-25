@@ -9,7 +9,8 @@ import com.caneproject.db.DataDb
 
 var uriList = mutableListOf<Uri>()
 var dateAndTime = ""
-var dataList = mutableListOf<Data>()
+var dataListFromModulo = mutableListOf<Data>()
+var dataListFromFile = mutableListOf<Data>()
 lateinit var db: DataDb
 var selectedItemInRecView = ""
 var deletedItemsDate = mutableListOf<String>()

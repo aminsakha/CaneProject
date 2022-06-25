@@ -46,7 +46,7 @@ class GettingDataPage : Fragment() {
                     binding.endBTN,
                     R.id.action_gettingDataPage_to_initPage
                 )
-                dataList.clear()
+                dataListFromModulo.clear()
                 uriList.clear()
             }
         }
@@ -61,7 +61,7 @@ class GettingDataPage : Fragment() {
 
     private suspend fun insertListToDB() {
         try {
-            for (data in dataList) {
+            for (data in dataListFromModulo) {
                 if (data.White.isNotEmpty())
                     db.dataDao().addData(data)
             }
@@ -71,8 +71,8 @@ class GettingDataPage : Fragment() {
 
     private fun setUris() {
         try {
-            for (i in dataList.indices) {
-                dataList[i].uriString = uriList[i].toString()
+            for (i in dataListFromModulo.indices) {
+                dataListFromModulo[i].uriString = uriList[i].toString()
             }
         } catch (e: IndexOutOfBoundsException) {
         }

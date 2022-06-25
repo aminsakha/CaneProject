@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -24,7 +25,12 @@ import com.caneproject.activities.screenWidth
 import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.db.Data
 import com.google.android.material.snackbar.Snackbar
-import java.io.File
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.utils.AppCenterLog
+import java.io.*
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -95,10 +101,31 @@ fun initialData(): Data {
 }
 
 fun shareImages(listOfUris: ArrayList<Uri>, context: Context) {
+
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND_MULTIPLE
         putParcelableArrayListExtra(Intent.EXTRA_STREAM, listOfUris)
         type = "image/*"
     }
     startActivity(context, Intent.createChooser(shareIntent, null), null)
+}
+
+fun dataListIntoJson(dataList: MutableList<Data>): String {
+    val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+    return gsonPretty.toJson(dataList)
+}
+
+fun readFile(uri: Uri, myContext: Context): List<String> {
+    val inputStream: InputStream? = myContext.contentResolver.openInputStream(uri)
+    val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+    val lineList = mutableListOf<String>()
+    bufferedReader.forEachLine { lineList.add(it) }
+    inputStream?.close()
+    return lineList
+}
+
+fun jsonFileToObjectList(jsonString: String): MutableList<Data> {
+    val arrayTutorialType = object : TypeToken<MutableList<Data>>() {}.type
+    val gson = Gson()
+    return gson.fromJson(jsonString, arrayTutorialType)
 }

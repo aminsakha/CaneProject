@@ -82,8 +82,8 @@ class Bluetooth(val context: Context) {
 
                     if (counter > 8) {
                         currentData.dateAndTime = dateAndTime
-                        dataList.add(currentData)
-                        cameraInstance?.setTextBoxText(dataList.size.toString())
+                        dataListFromModulo.add(currentData)
+                        cameraInstance?.setTextBoxText(dataListFromModulo.size.toString())
                         currentData = initialData()
                         counter = 1
                     }
