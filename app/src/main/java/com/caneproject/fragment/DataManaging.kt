@@ -3,7 +3,10 @@ package com.caneproject.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +19,7 @@ import com.caneproject.adaptors.DataManagingAdaptor
 import com.caneproject.databinding.FragmentDataManagingBinding
 import com.caneproject.utils.*
 import kotlinx.coroutines.launch
+import java.io.File
 
 private const val READ_CODE = 41
 
@@ -47,6 +51,7 @@ class DataManaging : Fragment() {
                 selectMultipleRow = false
             }
         }
+
         binding.addFileBTN.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -78,7 +83,21 @@ class DataManaging : Fragment() {
             val strings = readFile(data.data!!, myContext)
             uriOfTextFile = data.data!!
             dataListFromFile = jsonFileToObjectList(strings.joinToString(""))
+            changeUrisOfImages()
+            Log.d(
+                "onActivityResult",
+                "onActivityResult: ${dataListFromFile[0].uriString.split("/").last()}"
+            )
             changeFragment(binding.addFileBTN, R.id.action_dataManaging_to_dataAnaliticsPage)
+        }
+    }
+
+    private fun changeUrisOfImages() {
+        val path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path +
+                    "Android/media/com.whatsapp/WhatsApp/Media/Whatsapp Images/"
+        dataListFromFile.forEach {
+            it.uriString = Uri.fromFile(File(path, it.uriString.split("/").last())).toString()
         }
     }
 
