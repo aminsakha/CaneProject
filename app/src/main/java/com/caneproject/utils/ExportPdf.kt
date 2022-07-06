@@ -1,13 +1,24 @@
 package com.caneproject.utils
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import android.print.PrintAttributes
 import android.provider.MediaStore
+import android.text.Layout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.caneproject.R
+import com.caneproject.activities.screenHeight
+import com.caneproject.activities.screenWidth
+import com.caneproject.db.Data
 import com.wwdablu.soumya.simplypdf.SimplyPdf
 import com.wwdablu.soumya.simplypdf.SimplyPdfDocument
+import com.wwdablu.soumya.simplypdf.composers.Composer
 import com.wwdablu.soumya.simplypdf.composers.properties.ImageProperties
 import com.wwdablu.soumya.simplypdf.composers.properties.TextProperties
 import com.wwdablu.soumya.simplypdf.document.DocumentInfo
@@ -16,16 +27,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
+
 class ExportPdf(
     private val context: Context,
+    private val inputList: MutableList<Data>,
 ) {
     private var simplyPdfDocument: SimplyPdfDocument? = null
+
     init {
         simplyPdfDocument = SimplyPdf.with(
             context,
             File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path,
-                "a10.pdf"
+                "a12.pdf"
             )
         )
             .colorMode(DocumentInfo.ColorMode.COLOR).paperSize(PrintAttributes.MediaSize.ISO_A4)
@@ -34,33 +48,49 @@ class ExportPdf(
         toastShower(context, "Pdf Created")
     }
 
-    private fun sampleText() {
-        val properties = TextProperties().apply {
+    fun createContent() {
+        val properties1 = TextProperties().apply {
             textColor = "#000000"
+            textSize = 34
+            alignment = Layout.Alignment.ALIGN_CENTER
         }
-        for (i in 1..10) {
-            properties.textSize = i * 4
+        val properties2 = TextProperties().apply {
+            textColor = "#000000"
+            textSize = 29
+            alignment = Layout.Alignment.ALIGN_CENTER
+        }
+        val imageProperties = ImageProperties().apply {
+            alignment = Composer.Alignment.CENTER
+        }
+        inputList.forEach {
+            val bitmap =
+                MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse(it.uriString))
+            simplyPdfDocument!!.image.drawBitmap(rotateImage(bitmap), imageProperties)
+            bitmap.recycle()
             simplyPdfDocument?.text?.write(
-                "The quick brown fox jumps over the hungry lazy dog. [Size: " + i * 4 + "]",
-                properties
+                it.toString(),
+                properties1
             )
+            simplyPdfDocument?.text?.write(
+                it.toStringForSecondPart(),
+                properties2
+            )
+            if (inputList.indexOf(it) != inputList.lastIndex)
+                simplyPdfDocument?.newPage()
         }
-        simplyPdfDocument?.newPage()
-        properties.textSize = 32
-        properties.textColor = "#FF0000"
-        simplyPdfDocument?.text?.write("Text with red color font", properties)
+        finishDoc()
     }
 
-    fun imageSample(vararg uri: Uri) {
-        sampleText()
-        val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri[0])
-        simplyPdfDocument!!.image.drawBitmap(bitmap, ImageProperties())
-        bitmap.recycle()
-        sampleText()
-        val bitmap2 = MediaStore.Images.Media.getBitmap(context.contentResolver, uri[1])
-        simplyPdfDocument!!.image.drawBitmap(bitmap2, ImageProperties())
-        bitmap2.recycle()
-        finishDoc()
+    private fun rotateImage(bitmap: Bitmap): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(90F)
+        return Bitmap.createScaledBitmap(
+            Bitmap.createBitmap(
+                bitmap, 0, 0, bitmap.width,
+                bitmap.height, matrix, true
+            ), (bitmap.width * 0.7).toInt(),
+            (bitmap.height * 0.9).toInt(), false
+        )
     }
 
     private fun finishDoc() {

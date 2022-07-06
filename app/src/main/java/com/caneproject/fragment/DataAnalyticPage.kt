@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,9 @@ import com.caneproject.adaptors.KotlinAdaptorForAnalytic
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import com.caneproject.db.Data
 import com.caneproject.utils.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.math.log
 
 class DataAnalyticPage : Fragment() {
     private var _binding: FragmentDataAnaliticsPageBinding? = null
@@ -49,8 +45,9 @@ class DataAnalyticPage : Fragment() {
 
 
         binding.sendBTN.setOnClickListener {
-            val tt = ExportPdf(myContext)
-            tt.imageSample(Uri.parse(tmpList[2].uriString),Uri.parse(tmpList[0].uriString))
+            val tt = ExportPdf(myContext,tmpList)
+            tt.createContent()
+
 //            val uriList = ArrayList<Uri>()
 //            for (data in tmpList) {
 //                val photoURI = getUriForSharing(data.uriString, myContext)

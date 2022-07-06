@@ -55,8 +55,6 @@ class KotlinAdaptorForAnalytic(val dataList: List<Data>, val context: Context) :
                 Uri.parse(dataList[position].uriString),
                 holder.imageView
             )
-            Log.d("onViewCreatedd", "before parse : ${dataList[position].uriString}")
-            Log.d("onViewCreatedd", "after  parse : ${Uri.parse(dataList[position].uriString)}")
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
         }
