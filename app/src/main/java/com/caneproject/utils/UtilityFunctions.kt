@@ -1,40 +1,37 @@
 package com.caneproject.utils
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
-import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.navigation.Navigation
 import com.ali.uneversaldatetools.date.JalaliDateTime
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.caneproject.BuildConfig
 import com.caneproject.R
 import com.caneproject.activities.screenHeight
 import com.caneproject.activities.screenWidth
-import com.caneproject.databinding.FragmentGettingDataPageBinding
 import com.caneproject.db.Data
 import com.google.android.material.snackbar.Snackbar
+import com.google.common.reflect.Reflection.getPackageName
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.utils.AppCenterLog
 import java.io.*
+import java.security.AccessController.getContext
 import java.text.DateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 var tmpArr = mutableListOf<String>()
@@ -132,10 +129,17 @@ fun jsonFileToObjectList(jsonString: String): MutableList<Data> {
 
 fun getUriForSharing(uri: String, context: Context): Uri {
     return Uri.parse(uri).path?.let { it1 -> File(it1) }?.let { it2 ->
-        FileProvider.getUriForFile(
+        getUriForFile(
             context,
             context.applicationContext.packageName.toString() + ".provider",
             it2
         )
     }!!
+}
+
+fun getUri(directory: String, fileName: String, context: Context): Uri? {
+    return getUriForFile(
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".provider", File(directory, fileName)
+    )
 }

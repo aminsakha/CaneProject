@@ -1,11 +1,10 @@
 package com.caneproject.fragment
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +18,10 @@ import com.caneproject.adaptors.DataManagingAdaptor
 import com.caneproject.databinding.FragmentDataManagingBinding
 import com.caneproject.utils.*
 import kotlinx.coroutines.launch
-import java.io.File
+
 
 private const val READ_CODE = 41
+private var isJsonSelected = false
 
 class DataManaging : Fragment() {
     private var adaptor: DataManagingAdaptor = DataManagingAdaptor(emptyList())
@@ -53,15 +53,19 @@ class DataManaging : Fragment() {
         }
 
         binding.addFileBTN.setOnClickListener {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "text/plain"
-            startActivityForResult(intent, READ_CODE)
+            selectJsonFile()
         }
 
         lifecycleScope.launch {
             initRecyclerView()
         }
+    }
+
+    private fun chooseMultipleImages() {
+        val filePickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        filePickerIntent.type = "image/*"
+        filePickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        startActivityForResult(filePickerIntent, READ_CODE)
     }
 
     private suspend fun initRecyclerView() {
@@ -80,29 +84,51 @@ class DataManaging : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == READ_CODE && data != null) {
-            val strings = readFile(data.data!!, myContext)
-            uriOfTextFile = data.data!!
-            dataListFromFile = jsonFileToObjectList(strings.joinToString(""))
-            changeUrisOfImages()
-            Log.d(
-                "onActivityResult",
-                "onActivityResult: ${dataListFromFile[0].uriString.split("/").last()}"
-            )
-            changeFragment(binding.addFileBTN, R.id.action_dataManaging_to_dataAnaliticsPage)
-        }
-    }
+            if (isJsonSelected) {
+                val clipData: ClipData = data.clipData!!
 
-    private fun changeUrisOfImages() {
-        val path =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path +
-                    "Android/media/com.whatsapp/WhatsApp/Media/Whatsapp Images/"
-        dataListFromFile.forEach {
-            it.uriString = Uri.fromFile(File(path, it.uriString.split("/").last())).toString()
+                for (i in 0 until clipData.itemCount) {
+                    for (j in 0 until dataListFromFile.size) {
+                        Log.d(
+                            "onActivityResult",
+                            "droped : ${
+                                dataListFromFile[j].uriString.split("/").last().dropLast(4)
+                            }"
+                        )
+                        Log.d(
+                            "onActivityResult",
+                            "cliped : ${
+                                clipData.getItemAt(i).uri
+                            }"
+                        )
+                        if (clipData.getItemAt(i).uri.toString().contains(
+                                dataListFromFile[j].uriString.split("/").last().dropLast(4)
+                            )
+                        ) {
+                            dataListFromFile[j].uriString = clipData.getItemAt(i).uri.toString()
+                        }
+                    }
+                }
+                isJsonSelected = false
+                changeFragment(binding.addFileBTN, R.id.action_dataManaging_to_dataAnaliticsPage)
+            } else {
+                isJsonSelected = true
+                val strings = readFile(data.data!!, myContext)
+                uriOfTextFile = data.data!!
+                dataListFromFile = jsonFileToObjectList(strings.joinToString(""))
+                chooseMultipleImages()
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun selectJsonFile() {
+        val filePickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        filePickerIntent.type = "text/plain"
+        startActivityForResult(filePickerIntent, READ_CODE)
     }
 }

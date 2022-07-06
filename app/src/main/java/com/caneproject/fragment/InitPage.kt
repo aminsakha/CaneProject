@@ -15,9 +15,6 @@ import com.caneproject.R
 import com.caneproject.databinding.FragmentInitPageBinding
 import com.caneproject.db.DataDb
 import com.caneproject.utils.*
-import com.google.firebase.FirebaseApp
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import java.io.File
 
