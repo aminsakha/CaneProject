@@ -2,7 +2,10 @@ package com.caneproject.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +15,8 @@ import com.caneproject.R
 import com.caneproject.databinding.FragmentInitPageBinding
 import com.caneproject.db.DataDb
 import com.caneproject.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import java.io.File
 
 class InitPage : Fragment() {
     private var bluetoothInstance: Bluetooth? = null
@@ -37,9 +38,7 @@ class InitPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val loadingDialog = LoadingDialog(myContext as Activity)
         bluetoothInstance = Bluetooth(myContext)
-
         checkConnectivity()
-
         db = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,
@@ -49,25 +48,30 @@ class InitPage : Fragment() {
             bluetoothInstance?.chooseDevice()
         }
         binding.connectToDeviceBTN.setOnClickListener {
-            loadingDialog.startDialog()
-            CoroutineScope(Dispatchers.IO).launch {
-                bluetoothInstance?.startConnection()
-                if (socket!!.isConnected) {
-                    withContext(Dispatchers.Main) {
-                        try {
-                            loadingDialog.dismissDialog()
-                            changeFragment(
-                                binding.connectToDeviceBTN,
-                                R.id.action_initPage_to_gettingDataPage
-                            )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+            if (connectedDevice == null) {
+                toastShower(myContext, "please first select a device")
+            } else {
+                loadingDialog.startDialog()
+                CoroutineScope(Dispatchers.IO).launch {
+                    bluetoothInstance?.startConnection()
+                    if (socket!!.isConnected) {
+                        withContext(Dispatchers.Main) {
+                            try {
+                                loadingDialog.dismissDialog()
+                                changeFragment(
+                                    binding.connectToDeviceBTN,
+                                    R.id.action_initPage_to_gettingDataPage
+                                )
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
-                    }
-                    bluetoothInstance?.receiveData()
-                } else
-                    loadingDialog.dismissDialog()
+                        bluetoothInstance?.receiveData()
+                    } else
+                        loadingDialog.dismissDialog()
+                }
             }
+
         }
         binding.libraryBTN.setOnClickListener {
             changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)

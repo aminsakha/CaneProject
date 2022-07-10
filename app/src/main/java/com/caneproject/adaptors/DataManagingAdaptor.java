@@ -1,8 +1,10 @@
 package com.caneproject.adaptors;
 
-import static com.caneproject.utils.GlobalVariablesKt.setSelectedItemInRecView;
+import static com.caneproject.utils.GlobalVariablesKt.*;
 import static com.caneproject.utils.UtilityFunctionsKt.changeFragment;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,12 +59,34 @@ public class DataManagingAdaptor extends RecyclerView.Adapter<DataManagingAdapto
     public static class ViewHolderDataManaging extends RecyclerView.ViewHolder {
         TextView recordTxt;
 
+
+        @SuppressLint("ClickableViewAccessibility")
         public ViewHolderDataManaging(View itemView) {
             super(itemView);
             recordTxt = itemView.findViewById(R.id.recordTextBox);
             itemView.setOnClickListener(view -> {
-                setSelectedItemInRecView(dateAndTimeList.get(getAdapterPosition()));
-                changeFragment(itemView, R.id.action_dataManaging_to_dataAnaliticsPage);
+                if (getSelectMultipleRow()) {
+                    if (view.getTag() == null) {
+                        view.setBackgroundColor(Color.parseColor("#fc5f53"));
+                        getDeletedItemsDate().add(dateAndTimeList.get(getAdapterPosition()));
+                        view.setTag(true);
+                    } else {
+                        view.setBackgroundColor(Color.TRANSPARENT);
+                        view.setTag(null);
+                        getDeletedItemsDate().remove(getAdapterPosition());
+                    }
+
+                } else {
+                    setSelectedItemInRecView(dateAndTimeList.get(getAdapterPosition()));
+                    changeFragment(itemView, R.id.action_dataManaging_to_dataAnaliticsPage);
+                }
+            });
+            itemView.setOnLongClickListener(view -> {
+                getDeletedItemsDate().add(dateAndTimeList.get(getAdapterPosition()));
+                view.setBackgroundColor(Color.parseColor("#fc5f53"));
+                setSelectMultipleRow(true);
+                view.setTag(true);
+                return true;
             });
         }
     }
