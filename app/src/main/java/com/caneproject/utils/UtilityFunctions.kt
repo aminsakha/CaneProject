@@ -98,11 +98,11 @@ fun initialData(): Data {
     return Data("", "", "", "", "", "", "", "", dateAndTime, "", true, "")
 }
 
-fun shareImages(listOfUris: ArrayList<Uri>, context: Context) {
+fun sharePdf(listOfUris: ArrayList<Uri>, context: Context) {
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND_MULTIPLE
         putParcelableArrayListExtra(Intent.EXTRA_STREAM, listOfUris)
-        type = "*/*"
+        type ="application/pdf"
     }
     startActivity(context, Intent.createChooser(shareIntent, null), null)
 }

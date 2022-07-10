@@ -9,12 +9,6 @@ import android.os.Environment
 import android.print.PrintAttributes
 import android.provider.MediaStore
 import android.text.Layout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import com.caneproject.R
-import com.caneproject.activities.screenHeight
-import com.caneproject.activities.screenWidth
 import com.caneproject.db.Data
 import com.wwdablu.soumya.simplypdf.SimplyPdf
 import com.wwdablu.soumya.simplypdf.SimplyPdfDocument
@@ -31,6 +25,7 @@ import java.io.File
 class ExportPdf(
     private val context: Context,
     private val inputList: MutableList<Data>,
+    fileName: String,
 ) {
     private var simplyPdfDocument: SimplyPdfDocument? = null
 
@@ -39,13 +34,13 @@ class ExportPdf(
             context,
             File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path,
-                "a12.pdf"
+                "${fileName}.pdf".replace("\\s".toRegex(), "").replace("/", ":").replace(":", "-")
             )
         )
             .colorMode(DocumentInfo.ColorMode.COLOR).paperSize(PrintAttributes.MediaSize.ISO_A4)
             .firstPageBackgroundColor(Color.WHITE)
             .paperOrientation(DocumentInfo.Orientation.PORTRAIT).build()
-        toastShower(context, "Pdf Created")
+        toastShower(context, "Getting Ready To Send Pdf")
     }
 
     fun createContent() {

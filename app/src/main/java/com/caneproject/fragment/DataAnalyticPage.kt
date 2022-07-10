@@ -1,9 +1,10 @@
 package com.caneproject.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +17,6 @@ import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import com.caneproject.db.Data
 import com.caneproject.utils.*
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 
 class DataAnalyticPage : Fragment() {
     private var _binding: FragmentDataAnaliticsPageBinding? = null
@@ -40,58 +39,42 @@ class DataAnalyticPage : Fragment() {
         binding.DateBox.text = selectedItemInRecView
         lifecycleScope.launch {
             initRecyclerView()
-
         }
-
-
         binding.sendBTN.setOnClickListener {
-            val tt = ExportPdf(myContext,tmpList)
+            val tt = ExportPdf(myContext, tmpList, selectedItemInRecView)
             tt.createContent()
-
-//            val uriList = ArrayList<Uri>()
-//            for (data in tmpList) {
-//                val photoURI = getUriForSharing(data.uriString, myContext)
-//                uriList.add(photoURI)
-//            }
-//            uriOfTextFile = writeToFile(dataListIntoJson(tmpList), tmpList[0].dateAndTime)
-//            uriList.add(getUriForSharing(uriOfTextFile.toString(), myContext))
-//            shareImages(uriList, myContext)
+            choosePdf()
         }
     }
 
     private suspend fun initRecyclerView() {
-        val adapter: KotlinAdaptorForAnalytic = if (selectedItemInRecView.isNotEmpty()) {
+        val adapter =
             KotlinAdaptorForAnalytic(
                 db.dataDao().getRecordInThisDate(selectedItemInRecView),
                 myContext
             )
-        } else {
-            KotlinAdaptorForAnalytic(
-                dataListFromFile,
-                myContext
-            )
-        }
         tmpList = adapter.dataList as MutableList<Data>
         binding.dataRecView.adapter = adapter
         binding.dataRecView.layoutManager = LinearLayoutManager(myContext)
         val dividerItemDecoration =
             DividerItemDecoration(myContext, DividerItemDecoration.VERTICAL)
         binding.dataRecView.addItemDecoration(dividerItemDecoration)
-        selectedItemInRecView = ""
+    }
+    private fun choosePdf() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+        }
+        startActivityForResult(intent, 2)
     }
 
-    private fun writeToFile(content: String, fileName: String): Uri? {
-        val tmp = fileName.split(",")
-        val validFileName =
-            "${tmp[0]}${tmp[1]}".replace("\\s".toRegex(), "").replace("/", ":").replace(":", ",")
-        val path =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).path
-        FileOutputStream(File(path, "$validFileName.txt")).apply {
-            write(content.toByteArray())
-            close()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 2 && data != null) {
+            val uriList = ArrayList<Uri>()
+            uriList.add(data.data!!)
+            sharePdf(uriList, myContext)
         }
-        toastShower(myContext, "got it")
-        return Uri.fromFile(File(path, "$validFileName.txt"))
     }
 
     override fun onDestroyView() {
