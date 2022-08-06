@@ -4,6 +4,9 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 import com.caneproject.R
 
+/**
+ * this class used for making simple loading dialog
+ */
 class LoadingDialog(private val activity: Activity) {
     private var alertDialog: AlertDialog? = null
     fun startDialog() {

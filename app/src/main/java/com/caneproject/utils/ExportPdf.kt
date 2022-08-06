@@ -21,7 +21,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-
+/**
+ * this class is for exporting pdf from Data List
+ */
 class ExportPdf(
     private val context: Context,
     private val inputList: MutableList<Data>,
@@ -29,6 +31,9 @@ class ExportPdf(
 ) {
     private var simplyPdfDocument: SimplyPdfDocument? = null
 
+    /**
+     * this is the initial part that makes the file with name of date of this file and set initial settings
+     */
     init {
         simplyPdfDocument = SimplyPdf.with(
             context,
@@ -43,6 +48,9 @@ class ExportPdf(
         toastShower(context, "Getting Ready To Send Pdf")
     }
 
+    /**
+     * this functions plays the main role and based of what is sent to it as inputList create 3 part for pdf and write it
+     */
     fun createContent() {
         val properties1 = TextProperties().apply {
             textColor = "#000000"
@@ -76,6 +84,9 @@ class ExportPdf(
         finishDoc()
     }
 
+    /**
+     * because the library default is landscape image we have to rotate it manually
+     */
     private fun rotateImage(bitmap: Bitmap): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(90F)
@@ -88,6 +99,9 @@ class ExportPdf(
         )
     }
 
+    /**
+     * save contents to the pdf in file in internal storage
+     */
     private fun finishDoc() {
         CoroutineScope(Dispatchers.IO).launch {
             simplyPdfDocument?.finish()

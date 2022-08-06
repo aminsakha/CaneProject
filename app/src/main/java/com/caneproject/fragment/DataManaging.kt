@@ -51,6 +51,9 @@ class DataManaging : Fragment() {
         }
     }
 
+    /**
+     * in this function adaptor is set with old records and the rest of the function is what is recommended in google website
+     */
     private suspend fun initRecyclerView() {
         adaptor = DataManagingAdaptor(getRecordDates())
         binding.dataManagingRecView.adapter = adaptor

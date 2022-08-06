@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.caneproject.adaptors.KotlinAdaptorForAnalytic
+import com.caneproject.adaptors.AdaptorForAnalytic
 import com.caneproject.databinding.FragmentDataAnaliticsPageBinding
 import com.caneproject.db.Data
 import com.caneproject.utils.*
@@ -41,15 +41,15 @@ class DataAnalyticPage : Fragment() {
             initRecyclerView()
         }
         binding.sendBTN.setOnClickListener {
-            val tt = ExportPdf(myContext, tmpList, selectedItemInRecView)
-            tt.createContent()
+            val pdf = ExportPdf(myContext, tmpList, selectedItemInRecView)
+            pdf.createContent()
             choosePdf()
         }
     }
 
     private suspend fun initRecyclerView() {
         val adapter =
-            KotlinAdaptorForAnalytic(
+            AdaptorForAnalytic(
                 db.dataDao().getRecordInThisDate(selectedItemInRecView),
                 myContext
             )

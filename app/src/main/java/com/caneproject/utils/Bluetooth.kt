@@ -15,8 +15,14 @@ import java.io.InputStream
 import java.nio.charset.StandardCharsets
 import java.util.*
 
+/**
+ * this class is for creating bluetooth channel , connecting and receiving data
+ * @constructor just get the context
+ */
 class Bluetooth(val context: Context) {
-
+    /**
+     * this function is for showing the old paired devices to the user and let the user select one
+     */
     @SuppressLint("MissingPermission")
     fun chooseDevice() {
         val bluetoothManager: BluetoothManager =
@@ -56,7 +62,6 @@ class Bluetooth(val context: Context) {
                 "Try Again , Not Connected"
             )
         }
-
     }
 
     fun disconnect() {
@@ -66,6 +71,11 @@ class Bluetooth(val context: Context) {
         }
     }
 
+    /**
+     * this function plays the main role in this class and kinda in the whole project , as it get what modulo sent to it
+     * and every time check if its the time to close that specific object and add it to the list if its valid according to the
+     * algorithms
+     */
     @SuppressLint("RestrictedApi")
     fun receiveData() {
         var counter = 1

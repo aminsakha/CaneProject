@@ -18,6 +18,9 @@ import com.caneproject.utils.*
 import kotlinx.coroutines.*
 import java.io.File
 
+/**
+ * landing page
+ */
 class InitPage : Fragment() {
     private var bluetoothInstance: Bluetooth? = null
     private var _binding: FragmentInitPageBinding? = null
@@ -47,6 +50,9 @@ class InitPage : Fragment() {
         binding.chooseDeviceBTN.setOnClickListener {
             bluetoothInstance?.chooseDevice()
         }
+        /**
+         * this function is using coroutine to handle AsyncTask process
+         */
         binding.connectToDeviceBTN.setOnClickListener {
             if (connectedDevice == null) {
                 toastShower(myContext, "please first select a device")
@@ -71,7 +77,6 @@ class InitPage : Fragment() {
                         loadingDialog.dismissDialog()
                 }
             }
-
         }
         binding.libraryBTN.setOnClickListener {
             changeFragment(binding.libraryBTN, R.id.action_initPage_to_dataManaging)

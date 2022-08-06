@@ -58,7 +58,9 @@ class GettingDataPage : Fragment() {
         _binding = null
     }
 
-
+    /**
+     * this function insert every object got from modulo into DB
+     */
     private suspend fun insertListToDB() {
         try {
             for (data in dataListFromModulo) {
@@ -68,7 +70,9 @@ class GettingDataPage : Fragment() {
         } catch (e: Exception) {
         }
     }
-
+    /**
+     * this function set uri for every object in dataListFromModulo
+     */
     private fun setUris() {
         try {
             for (i in dataListFromModulo.indices) {

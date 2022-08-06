@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +23,11 @@ import kotlinx.coroutines.*
 lateinit var myContext: Context
 lateinit var myDataLIst: List<Data>
 
-class KotlinAdaptorForAnalytic(val dataList: List<Data>, val context: Context) :
-    RecyclerView.Adapter<KotlinAdaptorForAnalytic.ViewHolder>() {
+/**
+ * this is the adaptor for analytic class
+ */
+class AdaptorForAnalytic(val dataList: List<Data>, val context: Context) :
+    RecyclerView.Adapter<AdaptorForAnalytic.ViewHolder>() {
     init {
         myContext = context
         myDataLIst = dataList

@@ -3,6 +3,9 @@ package com.caneproject.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * main class of room database that work with this 8 main items
+ */
 @Entity(tableName = "data_table")
 data class Data(
     var White: String,

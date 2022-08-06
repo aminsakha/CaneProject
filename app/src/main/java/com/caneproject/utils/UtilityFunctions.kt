@@ -39,6 +39,11 @@ fun toastShower(context: Context?, message: String?) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
+/**
+ * this function is used for decode what modulo sent to us
+ * @param string row string of what modulo sent
+ * @return a list of string that can be 0 or more item such 0R,4G
+ */
 fun processOnString(string: String): MutableList<String> {
     val validStrings = mutableListOf<String>()
     string.forEach { firstIt ->
@@ -70,6 +75,11 @@ fun simpleSnackBar(view: View, alertText: String) {
     Snackbar.make(view, alertText, Snackbar.LENGTH_SHORT).show()
 }
 
+/**
+ * this function is used for showing the user the paired devices with bluetooth
+ * @param title title of dialog
+ * @param itemList the CharSequence of what should be shown in the dialog
+ */
 @SuppressLint("MissingPermission")
 fun showListViewInDialog(title: String, itemList: Array<CharSequence>, context: Context) {
     val builder = AlertDialog.Builder(context)
@@ -105,41 +115,4 @@ fun sharePdf(listOfUris: ArrayList<Uri>, context: Context) {
         type ="application/pdf"
     }
     startActivity(context, Intent.createChooser(shareIntent, null), null)
-}
-
-fun dataListIntoJson(dataList: MutableList<Data>): String {
-    val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-    return gsonPretty.toJson(dataList)
-}
-
-fun readFile(uri: Uri, myContext: Context): List<String> {
-    val inputStream: InputStream? = myContext.contentResolver.openInputStream(uri)
-    val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-    val lineList = mutableListOf<String>()
-    bufferedReader.forEachLine { lineList.add(it) }
-    inputStream?.close()
-    return lineList
-}
-
-fun jsonFileToObjectList(jsonString: String): MutableList<Data> {
-    val arrayTutorialType = object : TypeToken<MutableList<Data>>() {}.type
-    val gson = Gson()
-    return gson.fromJson(jsonString, arrayTutorialType)
-}
-
-fun getUriForSharing(uri: String, context: Context): Uri {
-    return Uri.parse(uri).path?.let { it1 -> File(it1) }?.let { it2 ->
-        getUriForFile(
-            context,
-            context.applicationContext.packageName.toString() + ".provider",
-            it2
-        )
-    }!!
-}
-
-fun getUri(directory: String, fileName: String, context: Context): Uri? {
-    return getUriForFile(
-        Objects.requireNonNull(context),
-        BuildConfig.APPLICATION_ID + ".provider", File(directory, fileName)
-    )
 }

@@ -23,6 +23,10 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+/**
+ * the main work of this class is for making camera instance and save gotten pictures
+ * and the specific of how this class work is said fully here : https://developer.android.com/codelabs/camerax-getting-started#0
+ */
 class Camera(
     myContext: Context,
     private var camera: PreviewView,

@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.caneproject.R;
 
 import java.util.List;
-
+/**
+ * this is the adaptor for datamanaging class
+ */
 public class DataManagingAdaptor extends RecyclerView.Adapter<DataManagingAdaptor.ViewHolderDataManaging> {
     public static List<String> dateAndTimeList;
 
@@ -59,7 +61,10 @@ public class DataManagingAdaptor extends RecyclerView.Adapter<DataManagingAdapto
     public static class ViewHolderDataManaging extends RecyclerView.ViewHolder {
         TextView recordTxt;
 
-
+        /**
+         * this function is for handling deleteation in datamanagig class
+         * @param itemView the elements in recView
+         */
         @SuppressLint("ClickableViewAccessibility")
         public ViewHolderDataManaging(View itemView) {
             super(itemView);

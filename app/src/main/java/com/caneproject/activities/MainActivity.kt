@@ -54,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    /**
+     * for checking if the permissions already granted or not
+     * @param permissions list of permitions according to api level
+     */
     private fun checkPermission(permissions: List<String>) {
         val missingPermissions = permissions.filter { permission ->
             ContextCompat.checkSelfPermission(
