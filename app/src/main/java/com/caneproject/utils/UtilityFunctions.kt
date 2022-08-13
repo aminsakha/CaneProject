@@ -23,6 +23,11 @@ import com.caneproject.R
 import com.caneproject.activities.screenHeight
 import com.caneproject.activities.screenWidth
 import com.caneproject.db.Data
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.reflect.Reflection.getPackageName
 import com.google.gson.Gson
@@ -112,7 +117,37 @@ fun sharePdf(listOfUris: ArrayList<Uri>, context: Context) {
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND_MULTIPLE
         putParcelableArrayListExtra(Intent.EXTRA_STREAM, listOfUris)
-        type ="application/pdf"
+        type = "application/pdf"
     }
     startActivity(context, Intent.createChooser(shareIntent, null), null)
+}
+
+fun findMusicFileInDirectory(context: Context, fileName: String): MediaItem {
+    val mp3Name = "b$fileName"
+    val id = context.resources.getIdentifier(
+        mp3Name,
+        "raw",
+        context.packageName
+    )
+    val uri = RawResourceDataSource.buildRawResourceUri(id)
+    return MediaItem.fromUri(uri)
+}
+
+fun playMusic(context: Context?, fileName: String) {
+    val playWhenReady = true
+    val currentWindow = 0
+    val playbackPosition: Long = 0
+    val player: ExoPlayer = ExoPlayer.Builder(context!!).build()
+    val myMedia = findMusicFileInDirectory(context, fileName)
+    player.setMediaItem(myMedia)
+    player.playWhenReady = playWhenReady
+    player.seekTo(currentWindow, playbackPosition)
+    player.prepare()
+    player.play()
+    player.addListener(object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (playbackState == Player.STATE_ENDED)
+                player.release()
+        }
+    })
 }

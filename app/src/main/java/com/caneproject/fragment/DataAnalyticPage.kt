@@ -1,3 +1,5 @@
+@file:Suppress("OverrideDeprecatedMigration")
+
 package com.caneproject.fragment
 
 import android.app.Activity
@@ -67,7 +69,7 @@ class DataAnalyticPage : Fragment() {
         }
         startActivityForResult(intent, 2)
     }
-
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 2 && data != null) {

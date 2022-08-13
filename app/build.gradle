@@ -118,4 +118,5 @@ dependencies {
     implementation 'com.github.wwdablu:SimplyPDF:2.0.0'
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
 }

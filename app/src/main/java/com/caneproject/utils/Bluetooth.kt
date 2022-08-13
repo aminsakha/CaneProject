@@ -7,9 +7,14 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import android.util.Log
 import com.caneproject.R
 import com.caneproject.fragment.cameraInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
@@ -93,6 +98,10 @@ class Bluetooth(val context: Context) {
                     if (counter > 8) {
                         currentData.dateAndTime = dateAndTime
                         dataListFromModulo.add(currentData)
+                        Log.d("Res", currentData.resultColor.first().toString())
+                        CoroutineScope(Dispatchers.Main).launch {
+                            playMusic(context, currentData.resultColor.first().toString())
+                        }
                         cameraInstance?.setTextBoxText(dataListFromModulo.size.toString())
                         currentData = initialData()
                         counter = 1
@@ -103,7 +112,6 @@ class Bluetooth(val context: Context) {
                         if (counter == 1 && status.endsWith("W")) {
                             cameraInstance?.takePhoto(context)
                         }
-
                         currentData.setDataAttribute(
                             counter,
                             status
