@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.caneproject.R
-import com.caneproject.utils.db
+import com.caneproject.utils.dataDb
 import com.caneproject.db.Data
 import com.caneproject.utils.loadImageForRecView
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
@@ -84,7 +84,7 @@ class AdaptorForAnalytic(val dataList: List<Data>, val context: Context) :
                     .setTitle("choose the real color")
                     .setColorListener { _, colorHex ->
                         runBlocking {
-                            db.dataDao()
+                            dataDb.dataDao()
                                 .updateColor(colorHex, myDataLIst[adapterPosition].uriString)
                         }
                         fab.backgroundTintList =

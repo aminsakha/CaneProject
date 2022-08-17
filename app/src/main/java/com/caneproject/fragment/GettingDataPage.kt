@@ -65,7 +65,7 @@ class GettingDataPage : Fragment() {
         try {
             for (data in dataListFromModulo) {
                 if (data.White.isNotEmpty())
-                    db.dataDao().addData(data)
+                    dataDb.dataDao().addData(data)
             }
         } catch (e: Exception) {
         }

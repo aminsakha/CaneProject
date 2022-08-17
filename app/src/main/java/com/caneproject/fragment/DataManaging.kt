@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caneproject.adaptors.DataManagingAdaptor
 import com.caneproject.databinding.FragmentDataManagingBinding
-import com.caneproject.utils.db
+import com.caneproject.utils.dataDb
 import com.caneproject.utils.deletedItemsDate
 import com.caneproject.utils.selectMultipleRow
 import com.caneproject.utils.simpleSnackBar
@@ -38,7 +38,7 @@ class DataManaging : Fragment() {
         binding.deleteItemBTN.setOnClickListener {
             lifecycleScope.launch {
                 for (date in deletedItemsDate) {
-                    db.dataDao().deleteData(date)
+                    dataDb.dataDao().deleteData(date)
                 }
                 simpleSnackBar(binding.dataManagingRecView, "Deleted Successfully")
                 initRecyclerView()
@@ -64,7 +64,7 @@ class DataManaging : Fragment() {
     }
 
     private suspend fun getRecordDates(): MutableList<String> {
-        return db.dataDao().getDates()
+        return dataDb.dataDao().getDates()
     }
 
     override fun onDestroyView() {

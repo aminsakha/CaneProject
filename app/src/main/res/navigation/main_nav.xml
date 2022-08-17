@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/initPage">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/gettingDataPage"
@@ -39,5 +39,14 @@
         <action
             android:id="@+id/action_dataManaging_to_dataAnaliticsPage"
             app:destination="@id/dataAnaliticsPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.caneproject.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_initPage"
+            app:destination="@id/initPage" />
     </fragment>
 </navigation>

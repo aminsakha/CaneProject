@@ -52,7 +52,7 @@ class DataAnalyticPage : Fragment() {
     private suspend fun initRecyclerView() {
         val adapter =
             AdaptorForAnalytic(
-                db.dataDao().getRecordInThisDate(selectedItemInRecView),
+                dataDb.dataDao().getRecordInThisDate(selectedItemInRecView),
                 myContext
             )
         tmpList = adapter.dataList as MutableList<Data>

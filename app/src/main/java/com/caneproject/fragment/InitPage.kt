@@ -2,21 +2,24 @@ package com.caneproject.fragment
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.room.Room
 import com.caneproject.R
 import com.caneproject.databinding.FragmentInitPageBinding
 import com.caneproject.db.DataDb
+import com.caneproject.db.UserDb
 import com.caneproject.utils.*
-import kotlinx.coroutines.*
-import java.io.File
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * landing page
@@ -26,14 +29,36 @@ class InitPage : Fragment() {
     private var _binding: FragmentInitPageBinding? = null
     private val binding get() = _binding!!
     private lateinit var myContext: Context
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        userDb = Room.databaseBuilder(
+            requireContext(),
+            UserDb::class.java,
+            "user_table"
+        ).build()
+        lifecycleScope.launch {
+            if (userDb.userDao().getUser().isEmpty()){
+                Log.d("check", "onCreate: got it")
+                isUserSet=false
+            }
+
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        if (!isUserSet){
+            findNavController().navigate(R.id.action_initPage_to_loginFragment, null)
+            Log.d("check", "onCreate: got it 2")
+        }
         _binding = FragmentInitPageBinding.inflate(layoutInflater, container, false)
         if (container != null)
             myContext = container.context
-
+        Log.d("check", "$isUserSet in view")
         return binding.root
     }
 
@@ -42,11 +67,12 @@ class InitPage : Fragment() {
         val loadingDialog = LoadingDialog(myContext as Activity)
         bluetoothInstance = Bluetooth(myContext)
         checkConnectivity()
-        db = Room.databaseBuilder(
+        dataDb = Room.databaseBuilder(
             myContext.applicationContext,
             DataDb::class.java,
             "data_table"
         ).build()
+
         binding.chooseDeviceBTN.setOnClickListener {
             bluetoothInstance?.chooseDevice()
         }

@@ -4,16 +4,20 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import com.caneproject.R
-import com.caneproject.utils.getScreenHeight
-import com.caneproject.utils.getScreenWidth
+import com.caneproject.db.UserDb
+import com.caneproject.utils.*
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import kotlinx.coroutines.launch
 
 var screenHeight = 0
 var screenWidth = 0
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             Analytics::class.java,
             Crashes::class.java
         )
+
         val aboveApi31Permissions = mutableListOf(
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
