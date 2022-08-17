@@ -31,18 +31,7 @@ class InitPage : Fragment() {
     private lateinit var myContext: Context
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userDb = Room.databaseBuilder(
-            requireContext(),
-            UserDb::class.java,
-            "user_table"
-        ).build()
-        lifecycleScope.launch {
-            if (userDb.userDao().getUser().isEmpty()){
-                Log.d("check", "onCreate: got it")
-                isUserSet=false
-            }
 
-        }
 
     }
 
@@ -50,11 +39,6 @@ class InitPage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        if (!isUserSet){
-            findNavController().navigate(R.id.action_initPage_to_loginFragment, null)
-            Log.d("check", "onCreate: got it 2")
-        }
         _binding = FragmentInitPageBinding.inflate(layoutInflater, container, false)
         if (container != null)
             myContext = container.context
